@@ -1,5 +1,5 @@
 {
-"name": "María Alegra",
+"name": "Sector II Cristo Rey",
 "short_name": "María Alegra",
 "teme_color": "#005954",
 "backgroud_color": "#005954",
@@ -12,7 +12,7 @@
 
 {  
 
-	"src": "/Alegra192.png",
+	"src": "/CristoRey192.png",
 	"type": "image/png",
 	"sizes": "192x192",
     "purpose": "any maskable"
@@ -20,7 +20,7 @@
 },
 {  
 
-	"src": "/Alegra360.png",
+	"src": "/CristoRey360.png",
 	"type": "image/jpeg",
 	"sizes": "512x512",
     "purpose": "maskable"
@@ -28,7 +28,7 @@
 },
 {  
 
-	"src": "/Alegra360.png",
+	"src": "/CristoRey360.png",
 	"type": "image/png",
 	"sizes": "180x180",
     "purpose": "maskable"
@@ -42,4 +42,5 @@
 
 
 }
+
 
