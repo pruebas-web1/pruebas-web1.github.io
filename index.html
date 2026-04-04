@@ -19,156 +19,68 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
-body {
-  font-family: 'Helvetica Neue', sans-serif;
-  background: #f5f5f5;
-  margin: 0;
-  padding: 0;
-}
-
-h1 {
-  text-align: center;
-  margin: 30px 0;
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: #FF6F00; /* Naranja Truper */
-}
-
-/* Swiper catalogo */
-.swiper {
-  width: 100%;
-  max-width: 900px;
-  height: 550px;
-  margin: auto;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-  background: #fff;
-}
-
-.swiper-slide {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  padding: 20px;
-  border-radius: 15px;
-  transition: transform 0.6s;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  background: #fff;
-}
-
-.swiper-slide img {
-  width: 100%;
-  height: auto;
-  border-radius: 15px;
-  margin-bottom: 12px;
-}
-
-.swiper-slide p {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 500;
-  color: #1f2937;
-  text-align: center;
-}
-
-/* Botón WhatsApp */
-.share-btn {
-  margin-top: 10px;
-  padding: 8px 16px;
-  border-radius: 30px;
-  border: none;
-  background-color: #25D366;
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 14px;
-}
-
-/* Botón instalar discreto con icono */
-#installBtn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: #000;
-  border: none;
-  border-radius: 50px;
-  padding: 12px 20px;
-  color: #FF6F00;
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-  z-index: 1000;
-}
-#installBtn i {
-  font-size: 16px;
-  color: #FF6F00;
-}
-
-/* Upload */
-.upload-container {
-  text-align: center;
-  margin: 20px;
-}
-
-.upload-container input {
-  display: none;
-}
-
-.upload-container label {
-  padding: 12px 25px;
-  background-color: #FF6F00;
-  color: #fff;
-  border-radius: 50px;
-  cursor: pointer;
-  font-weight: bold;
-  margin-bottom: 15px;
-  display: inline-block;
-}
+body { font-family: 'Helvetica Neue', sans-serif; background: #f5f5f5; margin:0; padding:0; }
+h1 { text-align:center; margin:30px 0; font-size:2.5rem; font-weight:bold; color:#FF6F00; }
+.swiper { width:100%; max-width:900px; height:550px; margin:auto; border-radius:20px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.2); background:#fff; }
+.swiper-slide { display:flex; justify-content:center; align-items:center; flex-direction:column; padding:20px; border-radius:15px; transition:transform 0.6s; box-shadow:0 5px 15px rgba(0,0,0,0.1); background:#fff; }
+.swiper-slide img { width:100%; height:auto; border-radius:15px; margin-bottom:12px; }
+.swiper-slide p { margin:0; font-size:1rem; font-weight:500; color:#1f2937; text-align:center; }
+.share-btn { margin-top:5px; padding:8px 16px; border-radius:30px; border:none; background-color:#25D366; color:#fff; font-weight:bold; cursor:pointer; display:flex; align-items:center; gap:5px; font-size:14px; }
+#installBtn { position: fixed; bottom: 20px; right: 20px; background-color: #000; border:none; border-radius:50px; padding:12px 20px; color:#FF6F00; font-size:14px; cursor:pointer; display:flex; align-items:center; gap:6px; box-shadow:0 5px 15px rgba(0,0,0,0.2); z-index:1000; }
+#installBtn i { font-size:16px; color:#FF6F00; }
+.upload-container { text-align:center; margin:20px; }
+.upload-container input { display:none; }
+.upload-container label { padding:12px 25px; background-color:#FF6F00; color:#fff; border-radius:50px; cursor:pointer; font-weight:bold; margin-bottom:15px; display:inline-block; }
+#searchInput { padding:8px 12px; border-radius:8px; border:1px solid #ccc; width:80%; max-width:400px; margin:auto; display:block; margin-bottom:20px; }
+.modal { display:none; position:fixed; z-index:2000; left:0; top:0; width:100%; height:100%; overflow:auto; background-color: rgba(0,0,0,0.5); }
+.modal-content { background:#fff; margin:10% auto; padding:20px; border-radius:10px; max-width:400px; position:relative; }
+.modal-close { position:absolute; top:10px; right:15px; font-size:20px; cursor:pointer; font-weight:bold; }
+.modal input, .modal textarea { width:100%; margin-bottom:10px; padding:8px; border-radius:5px; border:1px solid #ccc; }
+.modal button { background:#FF6F00; color:#fff; padding:10px; border:none; border-radius:10px; cursor:pointer; font-weight:bold; width:100%; }
 </style>
 </head>
 <body>
 
 <h1>🔧 Catálogo Virtual</h1>
 
+<!-- Buscador -->
+<input type="text" id="searchInput" placeholder="🔍 Buscar herramienta...">
+
 <!-- Contenedor del catálogo -->
 <div class="swiper" id="catalogo">
   <div class="swiper-wrapper" id="slidesContainer">
     <!-- Imágenes de ejemplo -->
     <div class="swiper-slide">
-      <img src="https://images.unsplash.com/photo-1603808033193-3f9b42f68297?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyNjI4MTR8MHwxfGFsbHwxfHx0b29sfGVufDB8fHx8&w=800" alt="Martillo">
+      <img src="https://images.unsplash.com/photo-1603808033193-3f9b42f68297?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800" alt="Martillo">
       <p>Martillo profesional de acero con mango antideslizante</p>
       <button class="share-btn" onclick="shareWhatsApp('Martillo profesional de acero con mango antideslizante https://images.unsplash.com/photo-1603808033193-3f9b42f68297')">
         <i class="bi bi-whatsapp"></i> Compartir
       </button>
+      <button class="share-btn" style="background:#FF6F00;margin-top:5px;" onclick="openModal('Martillo profesional de acero con mango antideslizante')">Solicitar Cotización</button>
     </div>
     <div class="swiper-slide">
-      <img src="https://images.unsplash.com/photo-1580657018435-688d03d1c5aa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyNjI4MTR8MHwxfGFsbHwyfHx0b29sfGVufDB8fHx8&w=800" alt="Taladro">
+      <img src="https://images.unsplash.com/photo-1580657018435-688d03d1c5aa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800" alt="Taladro">
       <p>Taladro eléctrico profesional 550W, velocidad variable</p>
       <button class="share-btn" onclick="shareWhatsApp('Taladro eléctrico profesional 550W, velocidad variable https://images.unsplash.com/photo-1580657018435-688d03d1c5aa')">
         <i class="bi bi-whatsapp"></i> Compartir
       </button>
+      <button class="share-btn" style="background:#FF6F00;margin-top:5px;" onclick="openModal('Taladro eléctrico profesional 550W, velocidad variable')">Solicitar Cotización</button>
     </div>
     <div class="swiper-slide">
-      <img src="https://images.unsplash.com/photo-1598032891224-28c29f899e8f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyNjI4MTR8MHwxfGFsbHwzfHx0b29sfGVufDB8fHx8&w=800" alt="Destornillador">
+      <img src="https://images.unsplash.com/photo-1598032891224-28c29f899e8f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800" alt="Destornillador">
       <p>Set de destornilladores profesionales 6 piezas, mango ergonómico</p>
       <button class="share-btn" onclick="shareWhatsApp('Set de destornilladores profesionales 6 piezas, mango ergonómico https://images.unsplash.com/photo-1598032891224-28c29f899e8f')">
         <i class="bi bi-whatsapp"></i> Compartir
       </button>
+      <button class="share-btn" style="background:#FF6F00;margin-top:5px;" onclick="openModal('Set de destornilladores profesionales 6 piezas, mango ergonómico')">Solicitar Cotización</button>
     </div>
     <div class="swiper-slide">
-      <img src="https://images.unsplash.com/photo-1616480559316-4461f95e03e0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyNjI4MTR8MHwxfGFsbHw0fHx0b29sfGVufDB8fHx8&w=800" alt="Llave Inglesa">
+      <img src="https://images.unsplash.com/photo-1616480559316-4461f95e03e0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800" alt="Llave Inglesa">
       <p>Llave inglesa ajustable profesional, acero cromado</p>
       <button class="share-btn" onclick="shareWhatsApp('Llave inglesa ajustable profesional, acero cromado https://images.unsplash.com/photo-1616480559316-4461f95e03e0')">
         <i class="bi bi-whatsapp"></i> Compartir
       </button>
+      <button class="share-btn" style="background:#FF6F00;margin-top:5px;" onclick="openModal('Llave inglesa ajustable profesional, acero cromado')">Solicitar Cotización</button>
     </div>
   </div>
 </div>
@@ -183,29 +95,41 @@ h1 {
 <!-- Botón instalación PWA -->
 <button id="installBtn"><i class="bi bi-phone"></i> Instalar</button>
 
+<!-- Modal Cotización -->
+<div class="modal" id="cotizacionModal">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal()">&times;</span>
+    <h3 class="font-bold mb-2">Solicitar Cotización</h3>
+    <input type="text" id="modalName" placeholder="Nombre">
+    <input type="email" id="modalEmail" placeholder="Correo electrónico">
+    <textarea id="modalMessage" placeholder="Mensaje"></textarea>
+    <button onclick="sendQuote()">Enviar</button>
+  </div>
+</div>
+
 <!-- Swiper JS -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 
 <script>
 const swiper = new Swiper('.swiper', {
-  effect: 'coverflow',
-  grabCursor: true,
-  centeredSlides: true,
-  slidesPerView: 'auto',
-  coverflowEffect: { rotate: 30, stretch: 0, depth: 200, modifier: 1, slideShadows: true },
-  loop: false
+  effect:'coverflow',
+  grabCursor:true,
+  centeredSlides:true,
+  slidesPerView:'auto',
+  coverflowEffect:{rotate:30,stretch:0,depth:200,modifier:1,slideShadows:true},
+  loop:false
 });
 
-// Subir imágenes dinámicamente con descripción
+// Subir imágenes con descripción
 const imageInput = document.getElementById('imageUpload');
 const slidesContainer = document.getElementById('slidesContainer');
 
-imageInput.addEventListener('change', (event) => {
+imageInput.addEventListener('change', (event)=>{
   const files = Array.from(event.target.files);
-  files.forEach(file => {
+  files.forEach(file=>{
     const description = prompt("Agrega una descripción para la imagen:");
     const reader = new FileReader();
-    reader.onload = e => {
+    reader.onload = e=>{
       const slide = document.createElement('div');
       slide.classList.add('swiper-slide');
       const img = document.createElement('img');
@@ -214,47 +138,91 @@ imageInput.addEventListener('change', (event) => {
       const p = document.createElement('p');
       p.textContent = description || 'Sin descripción';
       slide.appendChild(p);
-      const btn = document.createElement('button');
-      btn.classList.add('share-btn');
-      btn.innerHTML = '<i class="bi bi-whatsapp"></i> Compartir';
-      btn.onclick = () => shareWhatsApp(description + ' ' + e.target.result);
-      slide.appendChild(btn);
+      const shareBtn = document.createElement('button');
+      shareBtn.classList.add('share-btn');
+      shareBtn.innerHTML='<i class="bi bi-whatsapp"></i> Compartir';
+      shareBtn.onclick=()=> shareWhatsApp(description+' '+e.target.result);
+      slide.appendChild(shareBtn);
+      const quoteBtn = document.createElement('button');
+      quoteBtn.classList.add('share-btn');
+      quoteBtn.style.background='#FF6F00';
+      quoteBtn.style.marginTop='5px';
+      quoteBtn.innerText='Solicitar Cotización';
+      quoteBtn.onclick=()=> openModal(description);
+      slide.appendChild(quoteBtn);
       slidesContainer.appendChild(slide);
       swiper.update();
     };
     reader.readAsDataURL(file);
   });
-  imageInput.value = '';
+  imageInput.value='';
 });
 
-// Compartir WhatsApp
-function shareWhatsApp(text) {
-  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+// Buscador
+const searchInput = document.getElementById('searchInput');
+searchInput.addEventListener('input', ()=>{
+  const query = searchInput.value.toLowerCase();
+  swiper.slides.forEach(slide=>{
+    const desc = slide.querySelector('p').textContent.toLowerCase();
+    slide.style.display = desc.includes(query) ? 'flex' : 'none';
+  });
+  swiper.update();
+});
+
+// WhatsApp
+function shareWhatsApp(text){
+  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`,'_blank');
 }
 
-// Descargar PDF
-function downloadPDF() {
-  html2pdf().set({
-    margin:0.5,
-    filename:'catalogo_virtual.pdf',
-    image:{type:'jpeg', quality:0.98},
-    html2canvas:{scale:2},
-    jsPDF:{unit:'in', format:'letter', orientation:'portrait'}
-  }).from(slidesContainer).save();
+// PDF Mejorado
+function downloadPDF(){
+  const slides = document.querySelectorAll('.swiper-slide');
+  const container = document.createElement('div');
+  slides.forEach(slide=>{
+    const page = document.createElement('div');
+    page.style.pageBreakAfter='always';
+    page.style.textAlign='center';
+    page.style.padding='20px';
+    const img = slide.querySelector('img').cloneNode();
+    img.style.maxWidth='600px';
+    const p = slide.querySelector('p').cloneNode(true);
+    p.style.fontSize='18px';
+    p.style.marginTop='10px';
+    page.appendChild(img);
+    page.appendChild(p);
+    container.appendChild(page);
+  });
+  html2pdf().set({margin:0.5, filename:'catalogo_virtual.pdf', image:{type:'jpeg', quality:0.98}, html2canvas:{scale:2}, jsPDF:{unit:'in', format:'letter', orientation:'portrait'}}).from(container).save();
 }
 
 // PWA Install
 let deferredPrompt;
-window.addEventListener('beforeinstallprompt', (e) => {
+window.addEventListener('beforeinstallprompt',(e)=>{
   e.preventDefault();
-  deferredPrompt = e;
-  const installBtn = document.getElementById('installBtn');
-  installBtn.style.display = 'flex';
-  installBtn.onclick = () => {
+  deferredPrompt=e;
+  const installBtn=document.getElementById('installBtn');
+  installBtn.style.display='flex';
+  installBtn.onclick=()=>{
     deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
+    deferredPrompt.userChoice.then(()=>{deferredPrompt=null;});
   };
 });
+
+// Modal Cotización
+const modal = document.getElementById('cotizacionModal');
+function openModal(product){
+  modal.style.display='block';
+  document.getElementById('modalMessage').value='Estoy interesado en: '+product;
+}
+function closeModal(){ modal.style.display='none'; }
+function sendQuote(){
+  const name = document.getElementById('modalName').value;
+  const email = document.getElementById('modalEmail').value;
+  const message = document.getElementById('modalMessage').value;
+  if(!name||!email||!message){ alert('Complete todos los campos'); return; }
+  alert('¡Solicitud enviada!\nNombre: '+name+'\nCorreo: '+email+'\nMensaje: '+message);
+  closeModal();
+}
 </script>
 </body>
 </html>
