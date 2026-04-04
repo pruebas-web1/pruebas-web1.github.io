@@ -274,5 +274,54 @@ function sendQuote(){
   closeModal();
 }
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  // Crear header si no existe
+  let existingHeader = document.querySelector('header');
+  if (!existingHeader) {
+    const header = document.createElement('header');
+    header.style.display = 'flex';
+    header.style.justifyContent = 'space-between';
+    header.style.alignItems = 'center';
+    header.style.padding = '10px 20px';
+    header.style.backgroundColor = '#000';
+    header.style.color = '#FF6F00';
+    header.style.position = 'sticky';
+    header.style.top = '0';
+    header.style.zIndex = '100';
+    
+    // Título dentro del header
+    const title = document.createElement('h1');
+    title.textContent = '🔧 Catálogo Virtual Profesional';
+    title.style.fontSize = '1.5rem';
+    title.style.margin = '0';
+    
+    header.appendChild(title);
+    
+    // Botón de instalación
+    const installBtn = document.getElementById('installBtn');
+    installBtn.style.position = 'static';
+    installBtn.style.margin = '0';
+    installBtn.style.flexShrink = '0';
+    installBtn.style.display = 'flex';
+    installBtn.style.alignItems = 'center';
+    installBtn.style.gap = '5px';
+    
+    header.appendChild(installBtn);
+    
+    // Insertar header antes del h1 original
+    const h1 = document.querySelector('h1');
+    if (h1) {
+      h1.style.display = 'none'; // ocultamos el h1 original
+      h1.parentNode.insertBefore(header, h1);
+    } else {
+      document.body.insertBefore(header, document.body.firstChild);
+    }
+  }
+});
+</script>
+
+  
 </body>
 </html>
