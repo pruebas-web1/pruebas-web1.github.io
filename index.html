@@ -6,10 +6,10 @@
   <meta name="theme-color" content="#1e293b">
   <title>Catálogo Profesional</title>
 
-  <!-- Tailwind -->
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Bootstrap -->
+  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- html2pdf -->
@@ -56,46 +56,40 @@
       font-weight: bold;
     }
 
-    /* Chatbot */
-    .chatbot-container {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #ffffff;
-      border-radius: 10px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-      width: 300px;
-      height: 400px;
-      z-index: 1000;
-    }
-
-    .chatbot-header {
-      background: #1e293b;
-      color: white;
-      padding: 10px;
-      text-align: center;
-      border-radius: 10px 10px 0 0;
-    }
-
-    .chatbot-messages {
-      height: 75%;
-      overflow-y: auto;
-      padding: 10px;
-      background: #f9f9f9;
-    }
-
-    .chatbot-input {
-      width: 100%;
-      padding: 10px;
-      border: none;
-      border-radius: 0 0 10px 10px;
-      outline: none;
-    }
-
     /* Contraste Alto */
     .high-contrast {
       background-color: #000;
       color: #FFF;
+    }
+
+    /* Botón de instalación fijo */
+    #installBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: none;
+      background-color: #FFB800;
+      border: none;
+      border-radius: 50px;
+      padding: 15px 30px;
+      color: #000;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .image-upload-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .image-upload-container img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
     }
   </style>
 </head>
@@ -103,27 +97,38 @@
 <body class="p-6">
 
   <div class="container text-center">
-    <h1 class="text-4xl font-bold mb-6">📘 Catálogo de Herramientas</h1>
+    <h1 class="text-4xl font-bold mb-6">📘 Catálogo</h1>
 
     <!-- Libro -->
     <div id="catalogo" class="book relative w-full max-w-3xl mx-auto">
+      <!-- Páginas del catálogo con imágenes -->
       <div class="page z-30" id="page1">
-        <h2 class="text-2xl font-bold mb-4">Bienvenido</h2>
-        <p>Explora nuestro catálogo profesional de herramientas de alta calidad.</p>
+        <h2 class="text-2xl font-bold mb-4">Imagen 1</h2>
+        <img src="https://via.placeholder.com/300" class="mx-auto mb-4 rounded" alt="Imagen 1">
       </div>
-
       <div class="page z-20" id="page2">
-        <h2 class="text-xl font-bold mb-4">Taladro Profesional</h2>
-        <img src="https://via.placeholder.com/300" class="mx-auto mb-4 rounded">
-        <p>Potente taladro ideal para uso industrial.</p>
-        <span class="text-green-600 font-bold">$120 USD</span>
+        <h2 class="text-2xl font-bold mb-4">Imagen 2</h2>
+        <img src="https://via.placeholder.com/300" class="mx-auto mb-4 rounded" alt="Imagen 2">
       </div>
-
       <div class="page z-10" id="page3">
-        <h2 class="text-xl font-bold mb-4">Caja de Herramientas</h2>
-        <img src="https://via.placeholder.com/300" class="mx-auto mb-4 rounded">
-        <p>Set completo de herramientas profesionales.</p>
-        <span class="text-green-600 font-bold">$85 USD</span>
+        <h2 class="text-2xl font-bold mb-4">Imagen 3</h2>
+        <img src="https://via.placeholder.com/300" class="mx-auto mb-4 rounded" alt="Imagen 3">
+      </div>
+      <div class="page z-10" id="page4">
+        <h2 class="text-2xl font-bold mb-4">Imagen 4</h2>
+        <img src="https://via.placeholder.com/300" class="mx-auto mb-4 rounded" alt="Imagen 4">
+      </div>
+      <div class="page z-10" id="page5">
+        <h2 class="text-2xl font-bold mb-4">Imagen 5</h2>
+        <img src="https://via.placeholder.com/300" class="mx-auto mb-4 rounded" alt="Imagen 5">
+      </div>
+      <div class="page z-10" id="page6">
+        <h2 class="text-2xl font-bold mb-4">Imagen 6</h2>
+        <img src="https://via.placeholder.com/300" class="mx-auto mb-4 rounded" alt="Imagen 6">
+      </div>
+      <div class="page z-10" id="page7">
+        <h2 class="text-2xl font-bold mb-4">Imagen 7</h2>
+        <img src="https://via.placeholder.com/300" class="mx-auto mb-4 rounded" alt="Imagen 7">
       </div>
     </div>
 
@@ -133,23 +138,19 @@
       <button class="btn btn-danger btn-custom" onclick="downloadPDF()">📄 Descargar PDF</button>
     </div>
 
-    <!-- Botón de instalación de PWA -->
-    <button id="installBtn" class="btn btn-warning btn-custom mt-4">Instalar PWA 📲</button>
+    <!-- Botón de instalación de la PWA -->
+    <button id="installBtn">Instalar PWA 📲</button>
 
-    <!-- Chatbot -->
-    <div id="chatbot" class="chatbot-container">
-      <div class="chatbot-header">Asistente Virtual</div>
-      <div class="chatbot-messages" id="chatbotMessages"></div>
-      <input type="text" id="chatbotInput" class="chatbot-input" placeholder="¿Cómo puedo ayudarte?" onkeydown="if(event.key === 'Enter'){sendMessage();}">
+    <!-- Contenedor de imágenes para subir -->
+    <div class="image-upload-container">
+      <input type="file" accept="image/*" onchange="uploadImage(event)" multiple id="imageUpload" class="hidden">
+      <label for="imageUpload" class="btn btn-warning btn-custom">Subir Imágenes</label>
     </div>
-
   </div>
 
   <script>
-    // Variables
     let currentPage = 1;
-    const totalPages = 3;
-    let deferredPrompt;
+    const totalPages = 7;
 
     // Funciones de navegación
     function nextPage() {
@@ -181,6 +182,7 @@
     }
 
     // Mostrar el botón de instalación de la PWA
+    let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
@@ -200,24 +202,27 @@
       });
     });
 
-    // Simular un chatbot de IA (esto puede ser una API real más adelante)
-    function sendMessage() {
-      const inputField = document.getElementById('chatbotInput');
-      const message = inputField.value;
-      inputField.value = '';
+    // Función para subir imágenes
+    function uploadImage(event) {
+      const files = event.target.files;
+      const imageContainer = document.querySelector('.image-upload-container');
 
-      const messageContainer = document.createElement('div');
-      messageContainer.textContent = 'Usuario: ' + message;
-      document.getElementById('chatbotMessages').appendChild(messageContainer);
+      // Limitar a 7 imágenes
+      if (files.length + imageContainer.children.length > 7) {
+        alert('Solo puedes subir hasta 7 imágenes.');
+        return;
+      }
 
-      const responseContainer = document.createElement('div');
-      responseContainer.textContent = 'Asistente: Estoy aquí para ayudarte. ¿Buscas alguna herramienta en particular?';
-      document.getElementById('chatbotMessages').appendChild(responseContainer);
-    }
-
-    // Cambiar a modo alto contraste
-    function toggleHighContrast() {
-      document.body.classList.toggle('high-contrast');
+      // Mostrar las imágenes subidas
+      Array.from(files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          imageContainer.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      });
     }
   </script>
 
