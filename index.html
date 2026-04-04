@@ -3,195 +3,258 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Catálogo Virtual</title>
-<meta name="theme-color" content="#1e293b">
+<title>Catálogo Virtual Profesional</title>
+<meta name="theme-color" content="#000000">
 
 <!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com"></script>
 
-<!-- Turn.js para animación tipo catálogo -->
-<script src="https://cdn.jsdelivr.net/npm/turn.js@4/turn.min.js"></script>
+<!-- Bootstrap Icons para WhatsApp -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-<!-- html2pdf para PDF -->
+<!-- Swiper CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
+
+<!-- html2pdf -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
-body { font-family:'Helvetica Neue',sans-serif; background:#f5f5f5; margin:0; padding:0; }
-header { background: linear-gradient(90deg,#1e293b,#3b82f6); color:#fff; padding:20px; display:flex; justify-content: space-between; align-items:center; flex-wrap: wrap; box-shadow:0 4px 15px rgba(0,0,0,0.2);}
-header h1 { font-size:2rem; font-weight:bold; }
-header button { background:#FFB800; color:#000; padding:10px 25px; border-radius:50px; font-weight:bold; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,0.2);}
+body {
+  font-family: 'Helvetica Neue', sans-serif;
+  background: #f5f5f5;
+  margin: 0;
+  padding: 0;
+}
 
-/* Libro */
-#book { width:90%; max-width:900px; height:550px; margin:40px auto; }
-.page { width:100%; height:100%; background:white; border-radius:15px; box-shadow:0 5px 15px rgba(0,0,0,0.2); display:flex; justify-content:center; align-items:center; flex-direction:column; padding:20px; position:relative; }
-.page img { width:100%; height:auto; border-radius:10px; margin-bottom:10px; }
-.page p { margin:0; font-size:1rem; text-align:center; }
+h1 {
+  text-align: center;
+  margin: 30px 0;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #FF6F00; /* Naranja Truper */
+}
 
-/* Botón compartir WhatsApp */
-.share-btn { background:#25D366; color:white; border:none; border-radius:50px; padding:8px 16px; cursor:pointer; margin-top:10px; font-weight:bold; }
+/* Swiper catalogo */
+.swiper {
+  width: 100%;
+  max-width: 900px;
+  height: 550px;
+  margin: auto;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  background: #fff;
+}
 
-.upload-container { text-align:center; margin:30px; }
-.upload-container input { display:none; }
-.upload-container label, .upload-container button { padding:12px 25px; background:#FFB800; color:#000; border-radius:50px; cursor:pointer; font-weight:bold; margin:5px; }
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+  border-radius: 15px;
+  transition: transform 0.6s;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  background: #fff;
+}
 
-/* Buscador */
-#searchContainer { text-align:center; margin:20px auto; }
-#searchInput { padding:10px 15px; width:300px; max-width:80%; border-radius:8px; border:1px solid #ccc; margin-bottom:10px; }
+.swiper-slide img {
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+  margin-bottom: 12px;
+}
+
+.swiper-slide p {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #1f2937;
+  text-align: center;
+}
+
+/* Botón WhatsApp */
+.share-btn {
+  margin-top: 10px;
+  padding: 8px 16px;
+  border-radius: 30px;
+  border: none;
+  background-color: #25D366;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+}
+
+/* Botón instalar discreto con icono */
+#installBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #000;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 20px;
+  color: #FF6F00;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  z-index: 1000;
+}
+#installBtn i {
+  font-size: 16px;
+  color: #FF6F00;
+}
+
+/* Upload */
+.upload-container {
+  text-align: center;
+  margin: 20px;
+}
+
+.upload-container input {
+  display: none;
+}
+
+.upload-container label {
+  padding: 12px 25px;
+  background-color: #FF6F00;
+  color: #fff;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-bottom: 15px;
+  display: inline-block;
+}
 </style>
 </head>
 <body>
 
-<header>
-  <h1>📘 Catálogo Virtual</h1>
-  <button id="installBtn">Instalar</button>
-</header>
+<h1>🔧 Catálogo Virtual</h1>
 
-<!-- Buscador funcional -->
-<div id="searchContainer">
-  <input type="text" id="searchInput" placeholder="Buscar por descripción..." oninput="filterPages()">
+<!-- Contenedor del catálogo -->
+<div class="swiper" id="catalogo">
+  <div class="swiper-wrapper" id="slidesContainer">
+    <!-- Imágenes de ejemplo -->
+    <div class="swiper-slide">
+      <img src="https://images.unsplash.com/photo-1603808033193-3f9b42f68297?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyNjI4MTR8MHwxfGFsbHwxfHx0b29sfGVufDB8fHx8&w=800" alt="Martillo">
+      <p>Martillo profesional de acero con mango antideslizante</p>
+      <button class="share-btn" onclick="shareWhatsApp('Martillo profesional de acero con mango antideslizante https://images.unsplash.com/photo-1603808033193-3f9b42f68297')">
+        <i class="bi bi-whatsapp"></i> Compartir
+      </button>
+    </div>
+    <div class="swiper-slide">
+      <img src="https://images.unsplash.com/photo-1580657018435-688d03d1c5aa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyNjI4MTR8MHwxfGFsbHwyfHx0b29sfGVufDB8fHx8&w=800" alt="Taladro">
+      <p>Taladro eléctrico profesional 550W, velocidad variable</p>
+      <button class="share-btn" onclick="shareWhatsApp('Taladro eléctrico profesional 550W, velocidad variable https://images.unsplash.com/photo-1580657018435-688d03d1c5aa')">
+        <i class="bi bi-whatsapp"></i> Compartir
+      </button>
+    </div>
+    <div class="swiper-slide">
+      <img src="https://images.unsplash.com/photo-1598032891224-28c29f899e8f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyNjI4MTR8MHwxfGFsbHwzfHx0b29sfGVufDB8fHx8&w=800" alt="Destornillador">
+      <p>Set de destornilladores profesionales 6 piezas, mango ergonómico</p>
+      <button class="share-btn" onclick="shareWhatsApp('Set de destornilladores profesionales 6 piezas, mango ergonómico https://images.unsplash.com/photo-1598032891224-28c29f899e8f')">
+        <i class="bi bi-whatsapp"></i> Compartir
+      </button>
+    </div>
+    <div class="swiper-slide">
+      <img src="https://images.unsplash.com/photo-1616480559316-4461f95e03e0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyNjI4MTR8MHwxfGFsbHw0fHx0b29sfGVufDB8fHx8&w=800" alt="Llave Inglesa">
+      <p>Llave inglesa ajustable profesional, acero cromado</p>
+      <button class="share-btn" onclick="shareWhatsApp('Llave inglesa ajustable profesional, acero cromado https://images.unsplash.com/photo-1616480559316-4461f95e03e0')">
+        <i class="bi bi-whatsapp"></i> Compartir
+      </button>
+    </div>
+  </div>
 </div>
 
-<!-- Contenedor libro -->
-<div id="book">
-  <div class="page" data-desc="Ejemplo de descripción 1">
-    <img src="https://picsum.photos/id/1015/800/400" alt="Imagen 1">
-    <p>Ejemplo de descripción 1</p>
-    <button class="share-btn" onclick="shareWhatsApp('Ejemplo de descripción 1 https://picsum.photos/id/1015/800/400')">Compartir WhatsApp</button>
-  </div>
-  <div class="page" data-desc="Ejemplo de descripción 2">
-    <img src="https://picsum.photos/id/1016/800/400" alt="Imagen 2">
-    <p>Ejemplo de descripción 2</p>
-    <button class="share-btn" onclick="shareWhatsApp('Ejemplo de descripción 2 https://picsum.photos/id/1016/800/400')">Compartir WhatsApp</button>
-  </div>
-  <div class="page" data-desc="Ejemplo de descripción 3">
-    <img src="https://picsum.photos/id/1020/800/400" alt="Imagen 3">
-    <p>Ejemplo de descripción 3</p>
-    <button class="share-btn" onclick="shareWhatsApp('Ejemplo de descripción 3 https://picsum.photos/id/1020/800/400')">Compartir WhatsApp</button>
-  </div>
-  <div class="page" data-desc="Ejemplo de descripción 4">
-    <img src="https://picsum.photos/id/1024/800/400" alt="Imagen 4">
-    <p>Ejemplo de descripción 4</p>
-    <button class="share-btn" onclick="shareWhatsApp('Ejemplo de descripción 4 https://picsum.photos/id/1024/800/400')">Compartir WhatsApp</button>
-  </div>
-</div>
-
-<!-- Subir imágenes y descargar PDF -->
+<!-- Upload y PDF -->
 <div class="upload-container">
   <input type="file" id="imageUpload" accept="image/*" multiple>
   <label for="imageUpload">➕ Agregar Imágenes</label>
   <button onclick="downloadPDF()">📄 Descargar PDF</button>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/turn.js@4/turn.min.js"></script>
+<!-- Botón instalación PWA -->
+<button id="installBtn"><i class="bi bi-phone"></i> Instalar</button>
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 
 <script>
-// Inicializar Turn.js como catálogo deslizable
-$('#book').turn({
-  width:900,
-  height:550,
-  autoCenter:true,
-  elevation:50,
-  duration:1000,
-  gradients:true,
-  display:'double'
+const swiper = new Swiper('.swiper', {
+  effect: 'coverflow',
+  grabCursor: true,
+  centeredSlides: true,
+  slidesPerView: 'auto',
+  coverflowEffect: { rotate: 30, stretch: 0, depth: 200, modifier: 1, slideShadows: true },
+  loop: false
 });
 
-// Subir imágenes con descripción
+// Subir imágenes dinámicamente con descripción
 const imageInput = document.getElementById('imageUpload');
-imageInput.addEventListener('change', e=>{
-  const files = Array.from(e.target.files);
-  files.forEach(file=>{
+const slidesContainer = document.getElementById('slidesContainer');
+
+imageInput.addEventListener('change', (event) => {
+  const files = Array.from(event.target.files);
+  files.forEach(file => {
+    const description = prompt("Agrega una descripción para la imagen:");
     const reader = new FileReader();
-    reader.onload = evt=>{
-      const page = document.createElement('div');
-      page.classList.add('page');
-
+    reader.onload = e => {
+      const slide = document.createElement('div');
+      slide.classList.add('swiper-slide');
       const img = document.createElement('img');
-      img.src = evt.target.result;
-      page.appendChild(img);
-
-      const desc = prompt("Ingrese la descripción de la imagen");
+      img.src = e.target.result;
+      slide.appendChild(img);
       const p = document.createElement('p');
-      p.innerText = desc || "Sin descripción";
-      page.appendChild(p);
-      page.setAttribute('data-desc', p.innerText.toLowerCase());
-
+      p.textContent = description || 'Sin descripción';
+      slide.appendChild(p);
       const btn = document.createElement('button');
       btn.classList.add('share-btn');
-      btn.innerText = "Compartir WhatsApp";
-      btn.onclick = ()=>shareWhatsApp(`${p.innerText} ${img.src}`);
-      page.appendChild(btn);
-
-      $('#book').turn('addPage', page, $('#book').turn('pages')+1);
-    }
+      btn.innerHTML = '<i class="bi bi-whatsapp"></i> Compartir';
+      btn.onclick = () => shareWhatsApp(description + ' ' + e.target.result);
+      slide.appendChild(btn);
+      slidesContainer.appendChild(slide);
+      swiper.update();
+    };
     reader.readAsDataURL(file);
   });
-  imageInput.value='';
+  imageInput.value = '';
 });
 
+// Compartir WhatsApp
+function shareWhatsApp(text) {
+  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+}
+
 // Descargar PDF
-function downloadPDF(){
-  const pages = document.querySelectorAll('#book .page');
-  const container = document.createElement('div');
-  container.style.width='800px';
-  container.style.margin='0 auto';
-  pages.forEach(p=>{
-    const clone = p.cloneNode(true);
-    clone.style.width='100%';
-    clone.style.marginBottom='20px';
-    container.appendChild(clone);
-  });
+function downloadPDF() {
   html2pdf().set({
     margin:0.5,
     filename:'catalogo_virtual.pdf',
     image:{type:'jpeg', quality:0.98},
     html2canvas:{scale:2},
     jsPDF:{unit:'in', format:'letter', orientation:'portrait'}
-  }).from(container).save();
+  }).from(slidesContainer).save();
 }
 
-// Instalación PWA
+// PWA Install
 let deferredPrompt;
-window.addEventListener('beforeinstallprompt', e=>{
+window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
-  const btn = document.getElementById('installBtn');
-  btn.style.display='inline-block';
-  btn.onclick = ()=>{
+  const installBtn = document.getElementById('installBtn');
+  installBtn.style.display = 'flex';
+  installBtn.onclick = () => {
     deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(()=>deferredPrompt=null);
-  }
+    deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
+  };
 });
-
-// Compartir WhatsApp
-function shareWhatsApp(text){
-  const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
-  window.open(url,'_blank');
-}
-
-// Buscador funcional
-function filterPages(){
-  const query = document.getElementById('searchInput').value.toLowerCase();
-  const pages = document.querySelectorAll('#book .page');
-  pages.forEach((page, index)=>{
-    const desc = page.getAttribute('data-desc');
-    if(desc.includes(query)){
-      $(page).show();
-    } else {
-      $(page).hide();
-    }
-  });
-  $('#book').turn('destroy').turn({
-    width:900,
-    height:550,
-    autoCenter:true,
-    elevation:50,
-    duration:1000,
-    gradients:true,
-    display:'double'
-  });
-}
 </script>
 </body>
 </html>
