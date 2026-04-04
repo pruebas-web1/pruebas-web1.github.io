@@ -92,7 +92,7 @@
       color: #000;
       font-size: 16px;
       cursor: pointer;
-      display: none;
+      display: inline-block;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
 
@@ -183,24 +183,8 @@
           <img src="https://via.placeholder.com/800x400?text=Imagen+4" alt="Imagen 4">
         </div>
       </div>
-      <div class="page" id="page5">
-        <div class="page-content">
-          <h2 class="text-3xl font-bold mb-4">Imagen 5</h2>
-          <img src="https://via.placeholder.com/800x400?text=Imagen+5" alt="Imagen 5">
-        </div>
-      </div>
-      <div class="page" id="page6">
-        <div class="page-content">
-          <h2 class="text-3xl font-bold mb-4">Imagen 6</h2>
-          <img src="https://via.placeholder.com/800x400?text=Imagen+6" alt="Imagen 6">
-        </div>
-      </div>
-      <div class="page" id="page7">
-        <div class="page-content">
-          <h2 class="text-3xl font-bold mb-4">Imagen 7</h2>
-          <img src="https://via.placeholder.com/800x400?text=Imagen+7" alt="Imagen 7">
-        </div>
-      </div>
+      <!-- Páginas dinámicas para imágenes adicionales -->
+      <div id="additionalPages"></div>
     </div>
 
     <!-- Controles de navegación -->
@@ -223,7 +207,8 @@
 
   <script>
     let currentPage = 1;
-    const totalPages = 7;
+    const totalPages = 7;  // Límite de páginas
+    let uploadedImages = 0; // Contador de imágenes subidas
 
     // Función para pasar a la siguiente página
     function nextPage() {
@@ -280,21 +265,24 @@
     // Función para subir imágenes
     function uploadImage(event) {
       const files = event.target.files;
-      const imageContainer = document.querySelector('.upload-container');
+      const additionalPagesContainer = document.getElementById("additionalPages");
 
-      // Limitar a 7 imágenes
-      if (files.length + imageContainer.children.length > 7) {
-        alert('Solo puedes subir hasta 7 imágenes.');
+      // Limitar a 7 imágenes en total (4 iniciales + 3 más)
+      if (uploadedImages + files.length > 3) {
+        alert('Solo puedes agregar hasta 3 imágenes adicionales.');
         return;
       }
 
-      // Mostrar las imágenes subidas
       Array.from(files).forEach(file => {
         const reader = new FileReader();
         reader.onload = function (e) {
+          const newPage = document.createElement('div');
+          newPage.classList.add('page');
           const img = document.createElement('img');
           img.src = e.target.result;
-          imageContainer.appendChild(img);
+          newPage.appendChild(img);
+          additionalPagesContainer.appendChild(newPage);
+          uploadedImages++;
         };
         reader.readAsDataURL(file);
       });
