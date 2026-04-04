@@ -15,8 +15,12 @@
 <!-- Swiper CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
 
+  <link rel="manifest" href="manifest.json">
+
 <!-- html2pdf -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  
 
 <style>
 body { font-family: 'Helvetica Neue', sans-serif; background:#f5f5f5; margin:0; padding:0; }
@@ -320,8 +324,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 });
+
+
+
+// Registro del Service Worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js') // Ruta al archivo sw.js
+    .then((registration) => {
+      console.log('Service Worker registrado con éxito:', registration);
+    })
+    .catch((error) => {
+      console.error('Error al registrar el Service Worker:', error);
+    });
+}
+
+  
 </script>
 
+  
   
 </body>
 </html>
