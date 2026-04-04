@@ -1,118 +1,56 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Catálogo Virtual Moderno</title>
-  <meta name="theme-color" content="#1e293b">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catálogo Virtual iOS 18</title>
+<meta name="theme-color" content="#1e293b">
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Swiper CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
+<!-- Turn.js para animación de libro -->
+<script src="https://cdn.jsdelivr.net/npm/turn.js@4/turn.min.js"></script>
 
-  <!-- html2pdf -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<!-- html2pdf -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-  <style>
-    body {
-      font-family: 'Helvetica Neue', sans-serif;
-      background: #f5f5f5;
-      margin: 0;
-      padding: 0;
-    }
-
-    h1 {
-      text-align: center;
-      margin: 30px 0;
-      font-size: 2.5rem;
-      font-weight: bold;
-    }
-
-    .swiper {
-      width: 100%;
-      max-width: 900px;
-      height: 550px;
-      margin: auto;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-    }
-
-    .swiper-slide {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: #fff;
-      border-radius: 20px;
-      font-size: 1.2rem;
-      text-align: center;
-      flex-direction: column;
-      padding: 20px;
-      transition: transform 0.6s;
-    }
-
-    .swiper-slide img {
-      width: 100%;
-      height: auto;
-      border-radius: 15px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-    }
-
-    /* Botón flotante */
-    #installBtn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: #FFB800;
-      border: none;
-      border-radius: 50px;
-      padding: 15px 30px;
-      color: #000;
-      font-size: 16px;
-      cursor: pointer;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-      z-index: 1000;
-    }
-
-    .upload-container {
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    .upload-container input {
-      display: none;
-    }
-
-    .upload-container label {
-      padding: 12px 25px;
-      background-color: #FFB800;
-      color: #000;
-      border-radius: 50px;
-      cursor: pointer;
-      font-weight: bold;
-      margin-bottom: 30px;
-      display: inline-block;
-    }
-  </style>
+<style>
+body { font-family: 'Helvetica Neue', sans-serif; background:#f5f5f5; margin:0; padding:0;}
+h1 { text-align:center; margin:20px 0; font-size:2.5rem; font-weight:bold; }
+#book { width: 90%; max-width: 900px; height: 550px; margin:auto; }
+.page { width: 100%; height: 100%; background:white; border-radius: 15px; box-shadow:0 5px 15px rgba(0,0,0,0.2); padding:20px; display:flex; justify-content:center; align-items:center; flex-direction:column; }
+.page img { width: 100%; height:auto; border-radius:10px; }
+#installBtn { position:fixed; bottom:20px; right:20px; background:#FFB800; color:#000; border:none; border-radius:50px; padding:15px 30px; cursor:pointer; z-index:1000; box-shadow:0 5px 15px rgba(0,0,0,0.2);}
+.upload-container { text-align:center; margin-top:20px; }
+.upload-container input { display:none; }
+.upload-container label { padding:12px 25px; background:#FFB800; color:#000; border-radius:50px; cursor:pointer; font-weight:bold; display:inline-block; }
+#searchContainer { text-align:center; margin:20px; }
+#searchInput { padding:10px 15px; width:300px; max-width:80%; border-radius:8px; border:1px solid #ccc; }
+#searchResults { margin-top:10px; text-align:center; }
+.search-item img { width:150px; height:auto; border-radius:8px; margin:10px; }
+</style>
 </head>
 <body>
 
-<h1>📘 Catálogo Virtual</h1>
+<h1>📘 Catálogo Virtual iOS 18</h1>
 
-<!-- Contenedor del catálogo -->
-<div class="swiper" id="catalogo">
-  <div class="swiper-wrapper" id="slidesContainer">
-    <!-- 4 imágenes de prueba de Picsum.photos -->
-    <div class="swiper-slide"><img src="https://picsum.photos/id/1015/800/400" alt="Imagen 1"></div>
-    <div class="swiper-slide"><img src="https://picsum.photos/id/1016/800/400" alt="Imagen 2"></div>
-    <div class="swiper-slide"><img src="https://picsum.photos/id/1020/800/400" alt="Imagen 3"></div>
-    <div class="swiper-slide"><img src="https://picsum.photos/id/1024/800/400" alt="Imagen 4"></div>
-  </div>
+<!-- Buscador de IA -->
+<div id="searchContainer">
+  <input type="text" id="searchInput" placeholder="Buscar imágenes / info (IA)" />
+  <button onclick="searchIA()" class="px-4 py-2 bg-yellow-400 rounded font-bold">Buscar</button>
+  <div id="searchResults"></div>
 </div>
 
-<!-- Contenedor para subir imágenes -->
+<!-- Contenedor del libro -->
+<div id="book">
+  <div class="page"><img src="https://picsum.photos/id/1015/800/400" alt="Imagen 1"></div>
+  <div class="page"><img src="https://picsum.photos/id/1016/800/400" alt="Imagen 2"></div>
+  <div class="page"><img src="https://picsum.photos/id/1020/800/400" alt="Imagen 3"></div>
+  <div class="page"><img src="https://picsum.photos/id/1024/800/400" alt="Imagen 4"></div>
+</div>
+
+<!-- Subir imágenes y descargar PDF -->
 <div class="upload-container">
   <input type="file" id="imageUpload" accept="image/*" multiple>
   <label for="imageUpload">➕ Agregar Imágenes</label>
@@ -122,72 +60,95 @@
 <!-- Botón instalación PWA -->
 <button id="installBtn">Instalar PWA 📲</button>
 
-<!-- Swiper JS -->
-<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/turn.js@4/turn.min.js"></script>
 
 <script>
-  // Inicialización de Swiper tipo coverflow para efecto eBook
-  const swiper = new Swiper('.swiper', {
-    effect: 'coverflow',
-    grabCursor: true,
-    centeredSlides: true,
-    slidesPerView: 'auto',
-    coverflowEffect: {
-      rotate: 30,
-      stretch: 0,
-      depth: 200,
-      modifier: 1,
-      slideShadows: true,
-    },
-    loop: false,
+// Inicializar turn.js
+$('#book').turn({
+  width: 900,
+  height: 550,
+  autoCenter: true,
+  elevation:50,
+  duration:1000,
+  gradients:true
+});
+
+// Subir imágenes dinámicas
+const imageInput = document.getElementById('imageUpload');
+imageInput.addEventListener('change', (e)=>{
+  const files = Array.from(e.target.files);
+  files.forEach(file=>{
+    const reader = new FileReader();
+    reader.onload = function(evt){
+      const page = document.createElement('div');
+      page.classList.add('page');
+      const img = document.createElement('img');
+      img.src = evt.target.result;
+      page.appendChild(img);
+      $('#book').turn('addPage', page, $('#book').turn('pages')+1);
+    }
+    reader.readAsDataURL(file);
   });
+  imageInput.value='';
+});
 
-  // Subir imágenes dinámicamente
-  const imageInput = document.getElementById('imageUpload');
-  const slidesContainer = document.getElementById('slidesContainer');
+// Descargar PDF
+function downloadPDF(){
+  const element = document.getElementById('book');
+  html2pdf().set({
+    margin:0.5,
+    filename:'catalogo_virtual.pdf',
+    image:{type:'jpeg', quality:0.98},
+    html2canvas:{scale:2},
+    jsPDF:{unit:'in', format:'letter', orientation:'portrait'}
+  }).from(element).save();
+}
 
-  imageInput.addEventListener('change', (event) => {
-    const files = Array.from(event.target.files);
-    files.forEach(file => {
-      const reader = new FileReader();
-      reader.onload = e => {
-        const slide = document.createElement('div');
-        slide.classList.add('swiper-slide');
-        const img = document.createElement('img');
-        img.src = e.target.result;
-        slide.appendChild(img);
-        slidesContainer.appendChild(slide);
-        swiper.update(); // Actualiza Swiper con nuevas slides
-      };
-      reader.readAsDataURL(file);
-    });
-    imageInput.value = ''; // Limpiar input
-  });
-
-  // Descargar PDF
-  function downloadPDF() {
-    const element = document.getElementById("slidesContainer");
-    html2pdf().set({
-      margin: 0.5,
-      filename: 'catalogo_virtual.pdf',
-      image: { type:'jpeg', quality:0.98 },
-      html2canvas: { scale:2 },
-      jsPDF: { unit:'in', format:'letter', orientation:'portrait' }
-    }).from(element).save();
+// PWA Instalación
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e)=>{
+  e.preventDefault();
+  deferredPrompt = e;
+  const btn = document.getElementById('installBtn');
+  btn.style.display='inline-block';
+  btn.onclick = ()=>{
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(choice=>deferredPrompt=null);
   }
+});
 
-  // Botón instalación PWA siempre visible
-  let deferredPrompt;
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    const installBtn = document.getElementById('installBtn');
-    installBtn.style.display = 'inline-block';
-    installBtn.onclick = () => {
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then(choice => deferredPrompt = null);
-    };
+// Buscador IA gratuito con DuckDuckGo Instant Answer
+function searchIA(){
+  const query = document.getElementById('searchInput').value;
+  if(!query) return alert('Ingrese un término de búsqueda');
+  fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_redirect=1`)
+  .then(resp=>resp.json())
+  .then(data=>{
+    const container = document.getElementById('searchResults');
+    container.innerHTML='';
+    if(data.RelatedTopics && data.RelatedTopics.length>0){
+      data.RelatedTopics.slice(0,5).forEach(item=>{
+        const div = document.createElement('div');
+        div.classList.add('search-item');
+        if(item.Icon && item.Icon.URL){
+          const img = document.createElement('img');
+          img.src='https://duckduckgo.com'+item.Icon.URL;
+          div.appendChild(img);
+        }
+        const a = document.createElement('a');
+        a.href=item.FirstURL || '#';
+        a.target='_blank';
+        a.innerText=item.Text || 'Ver más';
+        div.appendChild(a);
+        container.appendChild(div);
+      });
+    } else {
+      container.innerHTML='<p>No se encontraron resultados.</p>';
+    }
   });
+}
 </script>
+
 </body>
 </html>
