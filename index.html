@@ -20,9 +20,16 @@
 
 <style>
 body { font-family: 'Helvetica Neue', sans-serif; background:#f5f5f5; margin:0; padding:0; }
-h1 { text-align:center; margin:30px 0; font-size:2.5rem; font-weight:bold; color:#FF6F00; }
-.swiper { width:100%; max-width:900px; height:580px; margin:auto; border-radius:20px; overflow:hidden; box-shadow:0 15px 35px rgba(0,0,0,0.2); background:#fff; }
-.swiper-slide { display:flex; justify-content:center; align-items:center; flex-direction:column; padding:20px; border-radius:15px; transition:transform 0.6s; background:#fff; box-shadow:0 8px 25px rgba(0,0,0,0.1); }
+h1 { 
+  text-align:center; 
+  margin:20px 10px; 
+  font-size:2rem; 
+  font-weight:bold; 
+  color:#FF6F00; 
+  line-height:1.2; 
+}
+.swiper { width:100%; max-width:900px; height:580px; margin:auto; border-radius:20px; overflow:hidden; box-shadow:0 15px 35px rgba(0,0,0,0.2); background:#fff; position:relative; }
+.swiper-slide { display:flex; justify-content:center; align-items:center; flex-direction:column; padding:20px; border-radius:15px; transition:transform 0.6s; background:#fff; box-shadow:0 8px 25px rgba(0,0,0,0.1); position:relative; }
 .swiper-slide img { width:100%; max-height:350px; border-radius:15px; margin-bottom:12px; object-fit:cover; }
 .swiper-slide p { margin:0; font-size:1rem; font-weight:500; color:#1f2937; text-align:center; }
 .share-btn { margin-top:5px; padding:8px 16px; border-radius:30px; border:none; background-color:#25D366; color:#fff; font-weight:bold; cursor:pointer; display:flex; align-items:center; gap:5px; font-size:14px; transition:0.2s; }
@@ -35,6 +42,12 @@ h1 { text-align:center; margin:30px 0; font-size:2.5rem; font-weight:bold; color
 .upload-container label:hover { opacity:0.85; }
 #searchInput { padding:8px 12px; border-radius:8px; border:1px solid #ccc; width:80%; max-width:400px; margin:auto; display:block; margin-bottom:20px; }
 
+/* Animación producto destacado */
+@keyframes highlightBounce {
+  0%, 100% { transform: scale(1); box-shadow:0 10px 25px rgba(255,111,0,0.5); }
+  50% { transform: scale(1.05); box-shadow:0 15px 35px rgba(255,111,0,0.8); }
+}
+
 /* Modal Cotización */
 .modal { display:none; position:fixed; z-index:2000; left:0; top:0; width:100%; height:100%; overflow:auto; background-color: rgba(0,0,0,0.5); }
 .modal-content { background:#fff; margin:10% auto; padding:20px; border-radius:10px; max-width:400px; position:relative; }
@@ -45,15 +58,13 @@ h1 { text-align:center; margin:30px 0; font-size:2.5rem; font-weight:bold; color
 </head>
 <body>
 
-<h1>🔧 Catálogo Virtual</h1>
+<h1>🔧 Catálogo Virtual Profesional</h1>
 
-<!-- Buscador -->
 <input type="text" id="searchInput" placeholder="🔍 Buscar herramienta...">
 
-<!-- Contenedor del catálogo -->
 <div class="swiper" id="catalogo">
   <div class="swiper-wrapper" id="slidesContainer">
-    <!-- Ejemplos reales de Unsplash -->
+    <!-- Productos de prueba 4 -->
     <div class="swiper-slide">
       <img src="https://images.unsplash.com/photo-1603808033193-3f9b42f68297?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800" alt="Martillo">
       <p>Martillo profesional de acero con mango antideslizante</p>
@@ -81,17 +92,14 @@ h1 { text-align:center; margin:30px 0; font-size:2.5rem; font-weight:bold; color
   </div>
 </div>
 
-<!-- Upload y PDF -->
 <div class="upload-container">
   <input type="file" id="imageUpload" accept="image/*" multiple>
   <label for="imageUpload">➕ Agregar Imágenes</label>
   <button onclick="downloadPDF()">📄 Descargar PDF</button>
 </div>
 
-<!-- Botón instalación PWA -->
 <button id="installBtn"><i class="bi bi-phone"></i> Instalar</button>
 
-<!-- Modal Cotización -->
 <div class="modal" id="cotizacionModal">
   <div class="modal-content">
     <span class="modal-close" onclick="closeModal()">&times;</span>
@@ -104,7 +112,6 @@ h1 { text-align:center; margin:30px 0; font-size:2.5rem; font-weight:bold; color
   </div>
 </div>
 
-<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 <script>
 const swiper = new Swiper('.swiper', {
@@ -116,15 +123,61 @@ const swiper = new Swiper('.swiper', {
   loop:false
 });
 
-// Subir imágenes dinámicamente
-const imageInput = document.getElementById('imageUpload');
-const slidesContainer = document.getElementById('slidesContainer');
+// Producto destacado animado
+const slidesContainer=document.getElementById('slidesContainer');
+const featuredSlide=document.createElement('div');
+featuredSlide.classList.add('swiper-slide');
+featuredSlide.style.border='3px solid #FF6F00';
+featuredSlide.style.animation='highlightBounce 2s infinite';
+featuredSlide.style.position='relative';
+
+const featuredLabel=document.createElement('div');
+featuredLabel.textContent='🎉 Nuevo';
+featuredLabel.style.position='absolute';
+featuredLabel.style.top='15px';
+featuredLabel.style.left='15px';
+featuredLabel.style.backgroundColor='#FF6F00';
+featuredLabel.style.color='#fff';
+featuredLabel.style.padding='5px 10px';
+featuredLabel.style.borderRadius='8px';
+featuredLabel.style.fontWeight='bold';
+featuredLabel.style.zIndex='10';
+featuredSlide.appendChild(featuredLabel);
+
+const fImg=document.createElement('img');
+fImg.src='https://images.unsplash.com/photo-1598032891224-28c29f899e8f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=800';
+fImg.alt='Juego de llaves';
+featuredSlide.appendChild(fImg);
+
+const fDesc=document.createElement('p');
+fDesc.textContent='Juego de llaves ajustables profesionales, acero reforzado';
+featuredSlide.appendChild(fDesc);
+
+const fShare=document.createElement('button');
+fShare.classList.add('share-btn');
+fShare.innerHTML='<i class="bi bi-whatsapp"></i> Compartir';
+fShare.onclick=()=> shareWhatsApp(fDesc.textContent+' '+fImg.src);
+featuredSlide.appendChild(fShare);
+
+const fQuote=document.createElement('button');
+fQuote.classList.add('share-btn');
+fQuote.style.background='#FF6F00';
+fQuote.style.marginTop='5px';
+fQuote.innerText='Solicitar Cotización';
+fQuote.onclick=()=> openModal(fDesc.textContent);
+featuredSlide.appendChild(fQuote);
+
+slidesContainer.insertBefore(featuredSlide,slidesContainer.firstChild);
+swiper.update();
+
+// Subir imágenes
+const imageInput=document.getElementById('imageUpload');
 imageInput.addEventListener('change',(event)=>{
-  const files = Array.from(event.target.files);
+  const files=Array.from(event.target.files);
   files.forEach(file=>{
-    const description = prompt("Agrega una descripción para la imagen:");
-    const reader = new FileReader();
-    reader.onload = e=>{
+    const description=prompt("Agrega una descripción para la imagen:");
+    const reader=new FileReader();
+    reader.onload=e=>{
       const slide=document.createElement('div');
       slide.classList.add('swiper-slide');
       const img=document.createElement('img');
@@ -154,22 +207,23 @@ imageInput.addEventListener('change',(event)=>{
 });
 
 // Buscador
-const searchInput = document.getElementById('searchInput');
+const searchInput=document.getElementById('searchInput');
 searchInput.addEventListener('input',()=>{
   const query=searchInput.value.toLowerCase();
   swiper.slides.forEach(slide=>{
     const desc=slide.querySelector('p').textContent.toLowerCase();
-    slide.style.display = desc.includes(query)? 'flex':'none';
+    slide.style.display=desc.includes(query)? 'flex':'none';
   });
   swiper.update();
 });
 
-// WhatsApp
+// WhatsApp correcto
 function shareWhatsApp(text){
-  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`,'_blank');
+  const url = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(text);
+  window.open(url,'_blank');
 }
 
-// PDF Mejorado
+// PDF profesional
 function downloadPDF(){
   const slides=document.querySelectorAll('.swiper-slide');
   const container=document.createElement('div');
