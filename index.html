@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#1e293b">
-  <title>Catálogo Interactivo</title>
+  <title>Catálogo Virtual</title>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -15,62 +15,72 @@
   <!-- html2pdf -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-  <!-- Manifest -->
-  <link rel="manifest" href="manifest.json">
-
   <style>
-    /* Estilos generales */
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #0f172a, #1e293b);
-      color: white;
+      font-family: 'Helvetica Neue', sans-serif;
+      background: #f5f5f5;
+      color: #333;
+      margin: 0;
+      padding: 0;
     }
 
+    .container {
+      max-width: 1200px;
+      margin: 40px auto;
+    }
+
+    /* Estilos del libro */
     .book {
-      width: 80%;
-      max-width: 900px;
+      width: 100%;
+      max-width: 800px;
+      height: 500px;
+      position: relative;
+      perspective: 1500px;
       margin: 0 auto;
-      perspective: 2000px;
     }
 
     .page {
-      width: 100%;
-      height: 500px;
-      background: #fff;
-      color: #333;
-      border-radius: 12px;
-      padding: 20px;
       position: absolute;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      transform-style: preserve-3d;
-      transform-origin: left;
+      width: 100%;
+      height: 100%;
+      background-color: white;
+      color: #333;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      border-radius: 15px;
       transition: transform 1s;
+      transform-origin: left center;
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      font-size: 1.2rem;
     }
 
     .page img {
       width: 100%;
       height: auto;
-      border-radius: 8px;
+      border-radius: 10px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
     }
 
     .page.flipped {
       transform: rotateY(-180deg);
     }
 
-    .controls {
-      margin-top: 20px;
-      display: flex;
-      justify-content: center;
-      gap: 15px;
+    .page-content {
+      text-align: center;
     }
 
+    /* Botones */
     .btn-custom {
       padding: 12px 30px;
+      font-size: 16px;
       font-weight: bold;
       border-radius: 50px;
     }
 
-    /* Estilos para el botón de instalar PWA */
+    /* Estilos de los botones flotantes */
     #installBtn {
       position: fixed;
       bottom: 20px;
@@ -83,79 +93,133 @@
       font-size: 16px;
       cursor: pointer;
       display: none;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     }
 
-    /* Estilos de imagen subida */
-    .image-upload-container {
+    /* Imagen subida */
+    .upload-container {
       display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
       justify-content: center;
-      margin-top: 20px;
+      margin-top: 30px;
     }
 
-    .image-upload-container img {
+    .upload-container img {
       width: 150px;
       height: 150px;
       object-fit: cover;
       border-radius: 8px;
+      margin: 10px;
+    }
+
+    /* Animación de carga */
+    .loader {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .loader span {
+      display: block;
+      width: 40px;
+      height: 40px;
+      margin: 0 5px;
+      border-radius: 50%;
+      background-color: #FFB800;
+      animation: loading 1.2s infinite ease-in-out;
+    }
+
+    .loader span:nth-child(2) {
+      animation-delay: 0.3s;
+    }
+
+    .loader span:nth-child(3) {
+      animation-delay: 0.6s;
+    }
+
+    @keyframes loading {
+      0% {
+        transform: scale(0);
+      }
+      50% {
+        transform: scale(1);
+      }
+      100% {
+        transform: scale(0);
+      }
     }
   </style>
 </head>
-<body>
 
-  <div class="container text-center">
-    <h1 class="text-4xl font-bold mb-6">📘 Catálogo Interactivo</h1>
+<body>
+  <div class="container">
+    <!-- Título -->
+    <h1 class="text-4xl font-bold text-center mb-6">📘 Catálogo Virtual</h1>
 
     <!-- Contenedor del libro -->
     <div class="book" id="catalogo">
       <!-- Páginas del catálogo -->
       <div class="page" id="page1">
-        <h2 class="text-2xl font-bold mb-4">Imagen 1</h2>
-        <img src="https://via.placeholder.com/800x400?text=Imagen+1" alt="Imagen 1">
+        <div class="page-content">
+          <h2 class="text-3xl font-bold mb-4">Imagen 1</h2>
+          <img src="https://via.placeholder.com/800x400?text=Imagen+1" alt="Imagen 1">
+        </div>
       </div>
       <div class="page" id="page2">
-        <h2 class="text-2xl font-bold mb-4">Imagen 2</h2>
-        <img src="https://via.placeholder.com/800x400?text=Imagen+2" alt="Imagen 2">
+        <div class="page-content">
+          <h2 class="text-3xl font-bold mb-4">Imagen 2</h2>
+          <img src="https://via.placeholder.com/800x400?text=Imagen+2" alt="Imagen 2">
+        </div>
       </div>
       <div class="page" id="page3">
-        <h2 class="text-2xl font-bold mb-4">Imagen 3</h2>
-        <img src="https://via.placeholder.com/800x400?text=Imagen+3" alt="Imagen 3">
+        <div class="page-content">
+          <h2 class="text-3xl font-bold mb-4">Imagen 3</h2>
+          <img src="https://via.placeholder.com/800x400?text=Imagen+3" alt="Imagen 3">
+        </div>
       </div>
       <div class="page" id="page4">
-        <h2 class="text-2xl font-bold mb-4">Imagen 4</h2>
-        <img src="https://via.placeholder.com/800x400?text=Imagen+4" alt="Imagen 4">
+        <div class="page-content">
+          <h2 class="text-3xl font-bold mb-4">Imagen 4</h2>
+          <img src="https://via.placeholder.com/800x400?text=Imagen+4" alt="Imagen 4">
+        </div>
       </div>
       <div class="page" id="page5">
-        <h2 class="text-2xl font-bold mb-4">Imagen 5</h2>
-        <img src="https://via.placeholder.com/800x400?text=Imagen+5" alt="Imagen 5">
+        <div class="page-content">
+          <h2 class="text-3xl font-bold mb-4">Imagen 5</h2>
+          <img src="https://via.placeholder.com/800x400?text=Imagen+5" alt="Imagen 5">
+        </div>
       </div>
       <div class="page" id="page6">
-        <h2 class="text-2xl font-bold mb-4">Imagen 6</h2>
-        <img src="https://via.placeholder.com/800x400?text=Imagen+6" alt="Imagen 6">
+        <div class="page-content">
+          <h2 class="text-3xl font-bold mb-4">Imagen 6</h2>
+          <img src="https://via.placeholder.com/800x400?text=Imagen+6" alt="Imagen 6">
+        </div>
       </div>
       <div class="page" id="page7">
-        <h2 class="text-2xl font-bold mb-4">Imagen 7</h2>
-        <img src="https://via.placeholder.com/800x400?text=Imagen+7" alt="Imagen 7">
+        <div class="page-content">
+          <h2 class="text-3xl font-bold mb-4">Imagen 7</h2>
+          <img src="https://via.placeholder.com/800x400?text=Imagen+7" alt="Imagen 7">
+        </div>
       </div>
     </div>
 
-    <!-- Controles para pasar páginas y descargar PDF -->
-    <div class="controls">
+    <!-- Controles de navegación -->
+    <div class="text-center mt-6">
       <button class="btn btn-primary btn-custom" onclick="prevPage()">⬅ Anterior</button>
       <button class="btn btn-success btn-custom" onclick="nextPage()">Siguiente ➡</button>
       <button class="btn btn-danger btn-custom" onclick="downloadPDF()">📄 Descargar PDF</button>
     </div>
 
-    <!-- Botón de instalación de la PWA -->
-    <button id="installBtn">Instalar PWA 📲</button>
-
     <!-- Contenedor para subir imágenes -->
-    <div class="image-upload-container">
+    <div class="upload-container">
       <input type="file" accept="image/*" onchange="uploadImage(event)" multiple id="imageUpload" class="hidden">
       <label for="imageUpload" class="btn btn-warning btn-custom">Subir Imágenes</label>
     </div>
+
   </div>
+
+  <!-- Botón de instalación PWA -->
+  <button id="installBtn">Instalar PWA 📲</button>
 
   <script>
     let currentPage = 1;
@@ -177,13 +241,13 @@
       }
     }
 
-    // Función para descargar el catálogo como PDF
+    // Función para descargar el catálogo en PDF
     function downloadPDF() {
       const element = document.getElementById("catalogo");
 
       const opt = {
         margin: 0.5,
-        filename: 'catalogo_interactivo.pdf',
+        filename: 'catalogo_virtual.pdf',
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
@@ -216,7 +280,7 @@
     // Función para subir imágenes
     function uploadImage(event) {
       const files = event.target.files;
-      const imageContainer = document.querySelector('.image-upload-container');
+      const imageContainer = document.querySelector('.upload-container');
 
       // Limitar a 7 imágenes
       if (files.length + imageContainer.children.length > 7) {
@@ -236,8 +300,5 @@
       });
     }
   </script>
-
-  <script src="service-worker.js"></script>
-
 </body>
 </html>
