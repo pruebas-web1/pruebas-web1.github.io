@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo Virtual Moderno</title>
   <meta name="theme-color" content="#1e293b">
-  <title>Catálogo Virtual</title>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
 
   <!-- html2pdf -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -19,68 +19,48 @@
     body {
       font-family: 'Helvetica Neue', sans-serif;
       background: #f5f5f5;
-      color: #333;
       margin: 0;
       padding: 0;
     }
 
-    .container {
-      max-width: 1200px;
-      margin: 40px auto;
+    h1 {
+      text-align: center;
+      margin: 30px 0;
+      font-size: 2.5rem;
+      font-weight: bold;
     }
 
-    /* Estilos del libro */
-    .book {
+    .swiper {
       width: 100%;
-      max-width: 800px;
-      height: 500px;
-      position: relative;
-      perspective: 1500px;
-      margin: 0 auto;
+      max-width: 900px;
+      height: 550px;
+      margin: auto;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
     }
 
-    .page {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-color: white;
-      color: #333;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      border-radius: 15px;
-      transition: transform 1s;
-      transform-origin: left center;
-      padding: 30px;
+    .swiper-slide {
       display: flex;
       justify-content: center;
       align-items: center;
-      flex-direction: column;
+      background: #fff;
+      border-radius: 20px;
       font-size: 1.2rem;
+      text-align: center;
+      flex-direction: column;
+      padding: 20px;
+      transition: transform 0.6s;
     }
 
-    .page img {
+    .swiper-slide img {
       width: 100%;
       height: auto;
-      border-radius: 10px;
+      border-radius: 15px;
       box-shadow: 0 5px 20px rgba(0,0,0,0.1);
     }
 
-    .page.flipped {
-      transform: rotateY(-180deg);
-    }
-
-    .page-content {
-      text-align: center;
-    }
-
-    /* Botones */
-    .btn-custom {
-      padding: 12px 30px;
-      font-size: 16px;
-      font-weight: bold;
-      border-radius: 50px;
-    }
-
-    /* Estilos de los botones flotantes */
+    /* Botón flotante */
     #installBtn {
       position: fixed;
       bottom: 20px;
@@ -92,201 +72,122 @@
       color: #000;
       font-size: 16px;
       cursor: pointer;
-      display: inline-block;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      z-index: 1000;
     }
 
-    /* Imagen subida */
     .upload-container {
-      display: flex;
-      justify-content: center;
-      margin-top: 30px;
+      text-align: center;
+      margin-top: 20px;
     }
 
-    .upload-container img {
-      width: 150px;
-      height: 150px;
-      object-fit: cover;
-      border-radius: 8px;
-      margin: 10px;
+    .upload-container input {
+      display: none;
     }
 
-    /* Animación de carga */
-    .loader {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .loader span {
-      display: block;
-      width: 40px;
-      height: 40px;
-      margin: 0 5px;
-      border-radius: 50%;
+    .upload-container label {
+      padding: 12px 25px;
       background-color: #FFB800;
-      animation: loading 1.2s infinite ease-in-out;
-    }
-
-    .loader span:nth-child(2) {
-      animation-delay: 0.3s;
-    }
-
-    .loader span:nth-child(3) {
-      animation-delay: 0.6s;
-    }
-
-    @keyframes loading {
-      0% {
-        transform: scale(0);
-      }
-      50% {
-        transform: scale(1);
-      }
-      100% {
-        transform: scale(0);
-      }
+      color: #000;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-bottom: 30px;
+      display: inline-block;
     }
   </style>
 </head>
-
 <body>
-  <div class="container">
-    <!-- Título -->
-    <h1 class="text-4xl font-bold text-center mb-6">📘 Catálogo Virtual</h1>
 
-    <!-- Contenedor del libro -->
-    <div class="book" id="catalogo">
-      <!-- Páginas del catálogo -->
-      <div class="page" id="page1">
-        <div class="page-content">
-          <h2 class="text-3xl font-bold mb-4">Imagen 1</h2>
-          <img src="/Alegra512.png" alt="Imagen 1">
-        </div>
-      </div>
-      <div class="page" id="page2">
-        <div class="page-content">
-          <h2 class="text-3xl font-bold mb-4">Imagen 2</h2>
-          <img src="/Alegra192.png" alt="Imagen 2">
-        </div>
-      </div>
-      <div class="page" id="page3">
-        <div class="page-content">
-          <h2 class="text-3xl font-bold mb-4">Imagen 3</h2>
-          <img src="CristoRey512.png" alt="Imagen 3">
-        </div>
-      </div>
-      <div class="page" id="page4">
-        <div class="page-content">
-          <h2 class="text-3xl font-bold mb-4">Imagen 4</h2>
-          <img src="/CristoRey192.png" alt="Imagen 4">
-        </div>
-      </div>
-      <!-- Páginas dinámicas para imágenes adicionales -->
-      <div id="additionalPages"></div>
-    </div>
+<h1>📘 Catálogo Virtual</h1>
 
-    <!-- Controles de navegación -->
-    <div class="text-center mt-6">
-      <button class="btn btn-primary btn-custom" onclick="prevPage()">⬅ Anterior</button>
-      <button class="btn btn-success btn-custom" onclick="nextPage()">Siguiente ➡</button>
-      <button class="btn btn-danger btn-custom" onclick="downloadPDF()">📄 Descargar PDF</button>
-    </div>
-
-    <!-- Contenedor para subir imágenes -->
-    <div class="upload-container">
-      <input type="file" accept="image/*" onchange="uploadImage(event)" multiple id="imageUpload" class="hidden">
-      <label for="imageUpload" class="btn btn-warning btn-custom">Subir Imágenes</label>
-    </div>
-
+<!-- Contenedor del catálogo -->
+<div class="swiper" id="catalogo">
+  <div class="swiper-wrapper" id="slidesContainer">
+    <!-- 4 imágenes de prueba de Picsum.photos -->
+    <div class="swiper-slide"><img src="https://picsum.photos/id/1015/800/400" alt="Imagen 1"></div>
+    <div class="swiper-slide"><img src="https://picsum.photos/id/1016/800/400" alt="Imagen 2"></div>
+    <div class="swiper-slide"><img src="https://picsum.photos/id/1020/800/400" alt="Imagen 3"></div>
+    <div class="swiper-slide"><img src="https://picsum.photos/id/1024/800/400" alt="Imagen 4"></div>
   </div>
+</div>
 
-  <!-- Botón de instalación PWA -->
-  <button id="installBtn">Instalar PWA 📲</button>
+<!-- Contenedor para subir imágenes -->
+<div class="upload-container">
+  <input type="file" id="imageUpload" accept="image/*" multiple>
+  <label for="imageUpload">➕ Agregar Imágenes</label>
+  <button onclick="downloadPDF()" style="margin-left:20px;">📄 Descargar PDF</button>
+</div>
 
-  <script>
-    let currentPage = 1;
-    const totalPages = 7;  // Límite de páginas
-    let uploadedImages = 0; // Contador de imágenes subidas
+<!-- Botón instalación PWA -->
+<button id="installBtn">Instalar PWA 📲</button>
 
-    // Función para pasar a la siguiente página
-    function nextPage() {
-      if (currentPage < totalPages) {
-        document.getElementById('page' + currentPage).classList.add('flipped');
-        currentPage++;
-      }
-    }
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 
-    // Función para retroceder a la página anterior
-    function prevPage() {
-      if (currentPage > 1) {
-        currentPage--;
-        document.getElementById('page' + currentPage).classList.remove('flipped');
-      }
-    }
+<script>
+  // Inicialización de Swiper tipo coverflow para efecto eBook
+  const swiper = new Swiper('.swiper', {
+    effect: 'coverflow',
+    grabCursor: true,
+    centeredSlides: true,
+    slidesPerView: 'auto',
+    coverflowEffect: {
+      rotate: 30,
+      stretch: 0,
+      depth: 200,
+      modifier: 1,
+      slideShadows: true,
+    },
+    loop: false,
+  });
 
-    // Función para descargar el catálogo en PDF
-    function downloadPDF() {
-      const element = document.getElementById("catalogo");
+  // Subir imágenes dinámicamente
+  const imageInput = document.getElementById('imageUpload');
+  const slidesContainer = document.getElementById('slidesContainer');
 
-      const opt = {
-        margin: 0.5,
-        filename: 'catalogo_virtual.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+  imageInput.addEventListener('change', (event) => {
+    const files = Array.from(event.target.files);
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const slide = document.createElement('div');
+        slide.classList.add('swiper-slide');
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        slide.appendChild(img);
+        slidesContainer.appendChild(slide);
+        swiper.update(); // Actualiza Swiper con nuevas slides
       };
-
-      html2pdf().set(opt).from(element).save();
-    }
-
-    // Mostrar el botón de instalación de la PWA
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      const installButton = document.getElementById('installBtn');
-      installButton.style.display = 'inline-block';
-
-      installButton.addEventListener('click', () => {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-          if (choiceResult.outcome === 'accepted') {
-            console.log('Usuario aceptó la instalación');
-          } else {
-            console.log('Usuario rechazó la instalación');
-          }
-          deferredPrompt = null;
-        });
-      });
+      reader.readAsDataURL(file);
     });
+    imageInput.value = ''; // Limpiar input
+  });
 
-    // Función para subir imágenes
-    function uploadImage(event) {
-      const files = event.target.files;
-      const additionalPagesContainer = document.getElementById("additionalPages");
+  // Descargar PDF
+  function downloadPDF() {
+    const element = document.getElementById("slidesContainer");
+    html2pdf().set({
+      margin: 0.5,
+      filename: 'catalogo_virtual.pdf',
+      image: { type:'jpeg', quality:0.98 },
+      html2canvas: { scale:2 },
+      jsPDF: { unit:'in', format:'letter', orientation:'portrait' }
+    }).from(element).save();
+  }
 
-      // Limitar a 7 imágenes en total (4 iniciales + 3 más)
-      if (uploadedImages + files.length > 3) {
-        alert('Solo puedes agregar hasta 3 imágenes adicionales.');
-        return;
-      }
-
-      Array.from(files).forEach(file => {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          const newPage = document.createElement('div');
-          newPage.classList.add('page');
-          const img = document.createElement('img');
-          img.src = e.target.result;
-          newPage.appendChild(img);
-          additionalPagesContainer.appendChild(newPage);
-          uploadedImages++;
-        };
-        reader.readAsDataURL(file);
-      });
-    }
-  </script>
+  // Botón instalación PWA siempre visible
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    const installBtn = document.getElementById('installBtn');
+    installBtn.style.display = 'inline-block';
+    installBtn.onclick = () => {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(choice => deferredPrompt = null);
+    };
+  });
+</script>
 </body>
 </html>
