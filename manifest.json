@@ -1,6 +1,6 @@
 {
-"name": "Sector II Cristo Rey",
-"short_name": "Sector II Cristo Rey",
+"name": "Catálogo",
+"short_name": "Catálogo",
 "teme_color": "#005954",
 "backgroud_color": "#005954",
 "display": "standalone",
@@ -12,7 +12,7 @@
 
 {  
 
-	"src": "/CristoRey192.png",
+	"src": "/taladro192.png",
 	"type": "image/png",
 	"sizes": "192x192",
     "purpose": "any maskable"
@@ -20,7 +20,7 @@
 },
 {  
 
-	"src": "/CristoRey360.png",
+	"src": "/taladro360.png",
 	"type": "image/jpeg",
 	"sizes": "512x512",
     "purpose": "maskable"
@@ -28,7 +28,7 @@
 },
 {  
 
-	"src": "/CristoRey360.png",
+	"src": "/taladro360.png",
 	"type": "image/png",
 	"sizes": "180x180",
     "purpose": "maskable"
