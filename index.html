@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#1e293b">
-  <title>Catálogo Profesional</title>
+  <title>Catálogo Interactivo</title>
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -19,27 +19,38 @@
   <link rel="manifest" href="manifest.json">
 
   <style>
+    /* Estilos generales */
     body {
+      font-family: 'Segoe UI', sans-serif;
       background: linear-gradient(135deg, #0f172a, #1e293b);
       color: white;
-      font-family: 'Segoe UI', sans-serif;
     }
 
     .book {
+      width: 80%;
+      max-width: 900px;
+      margin: 0 auto;
       perspective: 2000px;
     }
 
     .page {
       width: 100%;
-      min-height: 500px;
-      background: white;
-      color: black;
+      height: 500px;
+      background: #fff;
+      color: #333;
       border-radius: 12px;
-      padding: 30px;
+      padding: 20px;
       position: absolute;
-      transition: transform 0.8s;
-      transform-origin: left;
       box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      transform-style: preserve-3d;
+      transform-origin: left;
+      transition: transform 1s;
+    }
+
+    .page img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
     }
 
     .page.flipped {
@@ -48,26 +59,22 @@
 
     .controls {
       margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
     }
 
     .btn-custom {
-      border-radius: 50px;
-      padding: 10px 25px;
+      padding: 12px 30px;
       font-weight: bold;
+      border-radius: 50px;
     }
 
-    /* Contraste Alto */
-    .high-contrast {
-      background-color: #000;
-      color: #FFF;
-    }
-
-    /* Botón de instalación fijo */
+    /* Estilos para el botón de instalar PWA */
     #installBtn {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      display: none;
       background-color: #FFB800;
       border: none;
       border-radius: 50px;
@@ -75,8 +82,10 @@
       color: #000;
       font-size: 16px;
       cursor: pointer;
+      display: none;
     }
 
+    /* Estilos de imagen subida */
     .image-upload-container {
       display: flex;
       flex-wrap: wrap;
@@ -93,55 +102,55 @@
     }
   </style>
 </head>
-
-<body class="p-6">
+<body>
 
   <div class="container text-center">
-    <h1 class="text-4xl font-bold mb-6">📘 Catálogo</h1>
+    <h1 class="text-4xl font-bold mb-6">📘 Catálogo Interactivo</h1>
 
-    <!-- Libro -->
-    <div id="catalogo" class="book relative w-full max-w-3xl mx-auto">
-      <!-- Páginas del catálogo con imágenes -->
-      <div class="page z-30" id="page1">
+    <!-- Contenedor del libro -->
+    <div class="book" id="catalogo">
+      <!-- Páginas del catálogo -->
+      <div class="page" id="page1">
         <h2 class="text-2xl font-bold mb-4">Imagen 1</h2>
-        <img src="/Alegra180.png" class="mx-auto mb-4 rounded" alt="Imagen 1">
+        <img src="https://via.placeholder.com/800x400?text=Imagen+1" alt="Imagen 1">
       </div>
-      <div class="page z-20" id="page2">
+      <div class="page" id="page2">
         <h2 class="text-2xl font-bold mb-4">Imagen 2</h2>
-        <img src="/Alegra360.png" class="mx-auto mb-4 rounded" alt="Imagen 2">
+        <img src="https://via.placeholder.com/800x400?text=Imagen+2" alt="Imagen 2">
       </div>
-      <div class="page z-10" id="page3">
+      <div class="page" id="page3">
         <h2 class="text-2xl font-bold mb-4">Imagen 3</h2>
-        <img src="/Alegra512.png" class="mx-auto mb-4 rounded" alt="Imagen 3">
+        <img src="https://via.placeholder.com/800x400?text=Imagen+3" alt="Imagen 3">
       </div>
-      <div class="page z-10" id="page4">
+      <div class="page" id="page4">
         <h2 class="text-2xl font-bold mb-4">Imagen 4</h2>
-        <img src="/CristoRey192.png" class="mx-auto mb-4 rounded" alt="Imagen 4">
+        <img src="https://via.placeholder.com/800x400?text=Imagen+4" alt="Imagen 4">
       </div>
-      <div class="page z-10" id="page5">
+      <div class="page" id="page5">
         <h2 class="text-2xl font-bold mb-4">Imagen 5</h2>
-        <img src="/CristoRey192.png" class="mx-auto mb-4 rounded" alt="Imagen 5">
+        <img src="https://via.placeholder.com/800x400?text=Imagen+5" alt="Imagen 5">
       </div>
-      <div class="page z-10" id="page6">
+      <div class="page" id="page6">
         <h2 class="text-2xl font-bold mb-4">Imagen 6</h2>
-        <img src="CristoRey512.png" class="mx-auto mb-4 rounded" alt="Imagen 6">
-<      </div>
-      <div class="page z-10" id="page7">
+        <img src="https://via.placeholder.com/800x400?text=Imagen+6" alt="Imagen 6">
+      </div>
+      <div class="page" id="page7">
         <h2 class="text-2xl font-bold mb-4">Imagen 7</h2>
-        <img src="CristoRey180.png" class="mx-auto mb-4 rounded" alt="Imagen 7">
+        <img src="https://via.placeholder.com/800x400?text=Imagen+7" alt="Imagen 7">
       </div>
     </div>
 
-    <div class="controls mt-6">
-      <button class="btn btn-primary btn-custom me-2" onclick="prevPage()">⬅ Anterior</button>
-      <button class="btn btn-success btn-custom me-2" onclick="nextPage()">Siguiente ➡</button>
+    <!-- Controles para pasar páginas y descargar PDF -->
+    <div class="controls">
+      <button class="btn btn-primary btn-custom" onclick="prevPage()">⬅ Anterior</button>
+      <button class="btn btn-success btn-custom" onclick="nextPage()">Siguiente ➡</button>
       <button class="btn btn-danger btn-custom" onclick="downloadPDF()">📄 Descargar PDF</button>
     </div>
 
     <!-- Botón de instalación de la PWA -->
     <button id="installBtn">Instalar PWA 📲</button>
 
-    <!-- Contenedor de imágenes para subir -->
+    <!-- Contenedor para subir imágenes -->
     <div class="image-upload-container">
       <input type="file" accept="image/*" onchange="uploadImage(event)" multiple id="imageUpload" class="hidden">
       <label for="imageUpload" class="btn btn-warning btn-custom">Subir Imágenes</label>
@@ -152,7 +161,7 @@
     let currentPage = 1;
     const totalPages = 7;
 
-    // Funciones de navegación
+    // Función para pasar a la siguiente página
     function nextPage() {
       if (currentPage < totalPages) {
         document.getElementById('page' + currentPage).classList.add('flipped');
@@ -160,6 +169,7 @@
       }
     }
 
+    // Función para retroceder a la página anterior
     function prevPage() {
       if (currentPage > 1) {
         currentPage--;
@@ -167,12 +177,13 @@
       }
     }
 
+    // Función para descargar el catálogo como PDF
     function downloadPDF() {
       const element = document.getElementById("catalogo");
 
       const opt = {
         margin: 0.5,
-        filename: 'catalogo_profesional.pdf',
+        filename: 'catalogo_interactivo.pdf',
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
@@ -193,9 +204,9 @@
         deferredPrompt.prompt();
         deferredPrompt.userChoice.then((choiceResult) => {
           if (choiceResult.outcome === 'accepted') {
-            console.log('User accepted the install prompt');
+            console.log('Usuario aceptó la instalación');
           } else {
-            console.log('User dismissed the install prompt');
+            console.log('Usuario rechazó la instalación');
           }
           deferredPrompt = null;
         });
@@ -227,5 +238,6 @@
   </script>
 
   <script src="service-worker.js"></script>
+
 </body>
 </html>
