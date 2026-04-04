@@ -3,89 +3,126 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Catálogo Virtual iOS 18</title>
+<title>Catálogo Virtual</title>
 <meta name="theme-color" content="#1e293b">
 
 <!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com"></script>
 
-<!-- Turn.js para animación de libro -->
+<!-- Turn.js para animación tipo catálogo -->
 <script src="https://cdn.jsdelivr.net/npm/turn.js@4/turn.min.js"></script>
 
-<!-- html2pdf -->
+<!-- html2pdf para PDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <style>
-body { font-family: 'Helvetica Neue', sans-serif; background:#f5f5f5; margin:0; padding:0;}
-h1 { text-align:center; margin:20px 0; font-size:2.5rem; font-weight:bold; }
-#book { width: 90%; max-width: 900px; height: 550px; margin:auto; }
-.page { width: 100%; height: 100%; background:white; border-radius: 15px; box-shadow:0 5px 15px rgba(0,0,0,0.2); padding:20px; display:flex; justify-content:center; align-items:center; flex-direction:column; }
-.page img { width: 100%; height:auto; border-radius:10px; }
-#installBtn { position:fixed; bottom:20px; right:20px; background:#FFB800; color:#000; border:none; border-radius:50px; padding:15px 30px; cursor:pointer; z-index:1000; box-shadow:0 5px 15px rgba(0,0,0,0.2);}
-.upload-container { text-align:center; margin-top:20px; }
+body { font-family:'Helvetica Neue',sans-serif; background:#f5f5f5; margin:0; padding:0; }
+header { background: linear-gradient(90deg,#1e293b,#3b82f6); color:#fff; padding:20px; display:flex; justify-content: space-between; align-items:center; flex-wrap: wrap; box-shadow:0 4px 15px rgba(0,0,0,0.2);}
+header h1 { font-size:2rem; font-weight:bold; }
+header button { background:#FFB800; color:#000; padding:10px 25px; border-radius:50px; font-weight:bold; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,0.2);}
+
+/* Libro */
+#book { width:90%; max-width:900px; height:550px; margin:40px auto; }
+.page { width:100%; height:100%; background:white; border-radius:15px; box-shadow:0 5px 15px rgba(0,0,0,0.2); display:flex; justify-content:center; align-items:center; flex-direction:column; padding:20px; position:relative; }
+.page img { width:100%; height:auto; border-radius:10px; margin-bottom:10px; }
+.page p { margin:0; font-size:1rem; text-align:center; }
+
+/* Botón compartir WhatsApp */
+.share-btn { background:#25D366; color:white; border:none; border-radius:50px; padding:8px 16px; cursor:pointer; margin-top:10px; font-weight:bold; }
+
+.upload-container { text-align:center; margin:30px; }
 .upload-container input { display:none; }
-.upload-container label { padding:12px 25px; background:#FFB800; color:#000; border-radius:50px; cursor:pointer; font-weight:bold; display:inline-block; }
-#searchContainer { text-align:center; margin:20px; }
-#searchInput { padding:10px 15px; width:300px; max-width:80%; border-radius:8px; border:1px solid #ccc; }
-#searchResults { margin-top:10px; text-align:center; }
-.search-item img { width:150px; height:auto; border-radius:8px; margin:10px; }
+.upload-container label, .upload-container button { padding:12px 25px; background:#FFB800; color:#000; border-radius:50px; cursor:pointer; font-weight:bold; margin:5px; }
+
+/* Buscador */
+#searchContainer { text-align:center; margin:20px auto; }
+#searchInput { padding:10px 15px; width:300px; max-width:80%; border-radius:8px; border:1px solid #ccc; margin-bottom:10px; }
 </style>
 </head>
 <body>
 
-<h1>📘 Catálogo Virtual iOS 18</h1>
+<header>
+  <h1>📘 Catálogo Virtual</h1>
+  <button id="installBtn">Instalar</button>
+</header>
 
-<!-- Buscador de IA -->
+<!-- Buscador funcional -->
 <div id="searchContainer">
-  <input type="text" id="searchInput" placeholder="Buscar imágenes / info (IA)" />
-  <button onclick="searchIA()" class="px-4 py-2 bg-yellow-400 rounded font-bold">Buscar</button>
-  <div id="searchResults"></div>
+  <input type="text" id="searchInput" placeholder="Buscar por descripción..." oninput="filterPages()">
 </div>
 
-<!-- Contenedor del libro -->
+<!-- Contenedor libro -->
 <div id="book">
-  <div class="page"><img src="https://picsum.photos/id/1015/800/400" alt="Imagen 1"></div>
-  <div class="page"><img src="https://picsum.photos/id/1016/800/400" alt="Imagen 2"></div>
-  <div class="page"><img src="https://picsum.photos/id/1020/800/400" alt="Imagen 3"></div>
-  <div class="page"><img src="https://picsum.photos/id/1024/800/400" alt="Imagen 4"></div>
+  <div class="page" data-desc="Ejemplo de descripción 1">
+    <img src="https://picsum.photos/id/1015/800/400" alt="Imagen 1">
+    <p>Ejemplo de descripción 1</p>
+    <button class="share-btn" onclick="shareWhatsApp('Ejemplo de descripción 1 https://picsum.photos/id/1015/800/400')">Compartir WhatsApp</button>
+  </div>
+  <div class="page" data-desc="Ejemplo de descripción 2">
+    <img src="https://picsum.photos/id/1016/800/400" alt="Imagen 2">
+    <p>Ejemplo de descripción 2</p>
+    <button class="share-btn" onclick="shareWhatsApp('Ejemplo de descripción 2 https://picsum.photos/id/1016/800/400')">Compartir WhatsApp</button>
+  </div>
+  <div class="page" data-desc="Ejemplo de descripción 3">
+    <img src="https://picsum.photos/id/1020/800/400" alt="Imagen 3">
+    <p>Ejemplo de descripción 3</p>
+    <button class="share-btn" onclick="shareWhatsApp('Ejemplo de descripción 3 https://picsum.photos/id/1020/800/400')">Compartir WhatsApp</button>
+  </div>
+  <div class="page" data-desc="Ejemplo de descripción 4">
+    <img src="https://picsum.photos/id/1024/800/400" alt="Imagen 4">
+    <p>Ejemplo de descripción 4</p>
+    <button class="share-btn" onclick="shareWhatsApp('Ejemplo de descripción 4 https://picsum.photos/id/1024/800/400')">Compartir WhatsApp</button>
+  </div>
 </div>
 
 <!-- Subir imágenes y descargar PDF -->
 <div class="upload-container">
   <input type="file" id="imageUpload" accept="image/*" multiple>
   <label for="imageUpload">➕ Agregar Imágenes</label>
-  <button onclick="downloadPDF()" style="margin-left:20px;">📄 Descargar PDF</button>
+  <button onclick="downloadPDF()">📄 Descargar PDF</button>
 </div>
-
-<!-- Botón instalación PWA -->
-<button id="installBtn">Instalar PWA 📲</button>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/turn.js@4/turn.min.js"></script>
 
 <script>
-// Inicializar turn.js
+// Inicializar Turn.js como catálogo deslizable
 $('#book').turn({
-  width: 900,
-  height: 550,
-  autoCenter: true,
+  width:900,
+  height:550,
+  autoCenter:true,
   elevation:50,
   duration:1000,
-  gradients:true
+  gradients:true,
+  display:'double'
 });
 
-// Subir imágenes dinámicas
+// Subir imágenes con descripción
 const imageInput = document.getElementById('imageUpload');
-imageInput.addEventListener('change', (e)=>{
+imageInput.addEventListener('change', e=>{
   const files = Array.from(e.target.files);
   files.forEach(file=>{
     const reader = new FileReader();
-    reader.onload = function(evt){
+    reader.onload = evt=>{
       const page = document.createElement('div');
       page.classList.add('page');
+
       const img = document.createElement('img');
       img.src = evt.target.result;
       page.appendChild(img);
+
+      const desc = prompt("Ingrese la descripción de la imagen");
+      const p = document.createElement('p');
+      p.innerText = desc || "Sin descripción";
+      page.appendChild(p);
+      page.setAttribute('data-desc', p.innerText.toLowerCase());
+
+      const btn = document.createElement('button');
+      btn.classList.add('share-btn');
+      btn.innerText = "Compartir WhatsApp";
+      btn.onclick = ()=>shareWhatsApp(`${p.innerText} ${img.src}`);
+      page.appendChild(btn);
+
       $('#book').turn('addPage', page, $('#book').turn('pages')+1);
     }
     reader.readAsDataURL(file);
@@ -95,60 +132,66 @@ imageInput.addEventListener('change', (e)=>{
 
 // Descargar PDF
 function downloadPDF(){
-  const element = document.getElementById('book');
+  const pages = document.querySelectorAll('#book .page');
+  const container = document.createElement('div');
+  container.style.width='800px';
+  container.style.margin='0 auto';
+  pages.forEach(p=>{
+    const clone = p.cloneNode(true);
+    clone.style.width='100%';
+    clone.style.marginBottom='20px';
+    container.appendChild(clone);
+  });
   html2pdf().set({
     margin:0.5,
     filename:'catalogo_virtual.pdf',
     image:{type:'jpeg', quality:0.98},
     html2canvas:{scale:2},
     jsPDF:{unit:'in', format:'letter', orientation:'portrait'}
-  }).from(element).save();
+  }).from(container).save();
 }
 
-// PWA Instalación
+// Instalación PWA
 let deferredPrompt;
-window.addEventListener('beforeinstallprompt', (e)=>{
+window.addEventListener('beforeinstallprompt', e=>{
   e.preventDefault();
   deferredPrompt = e;
   const btn = document.getElementById('installBtn');
   btn.style.display='inline-block';
   btn.onclick = ()=>{
     deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(choice=>deferredPrompt=null);
+    deferredPrompt.userChoice.then(()=>deferredPrompt=null);
   }
 });
 
-// Buscador IA gratuito con DuckDuckGo Instant Answer
-function searchIA(){
-  const query = document.getElementById('searchInput').value;
-  if(!query) return alert('Ingrese un término de búsqueda');
-  fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_redirect=1`)
-  .then(resp=>resp.json())
-  .then(data=>{
-    const container = document.getElementById('searchResults');
-    container.innerHTML='';
-    if(data.RelatedTopics && data.RelatedTopics.length>0){
-      data.RelatedTopics.slice(0,5).forEach(item=>{
-        const div = document.createElement('div');
-        div.classList.add('search-item');
-        if(item.Icon && item.Icon.URL){
-          const img = document.createElement('img');
-          img.src='https://duckduckgo.com'+item.Icon.URL;
-          div.appendChild(img);
-        }
-        const a = document.createElement('a');
-        a.href=item.FirstURL || '#';
-        a.target='_blank';
-        a.innerText=item.Text || 'Ver más';
-        div.appendChild(a);
-        container.appendChild(div);
-      });
+// Compartir WhatsApp
+function shareWhatsApp(text){
+  const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+  window.open(url,'_blank');
+}
+
+// Buscador funcional
+function filterPages(){
+  const query = document.getElementById('searchInput').value.toLowerCase();
+  const pages = document.querySelectorAll('#book .page');
+  pages.forEach((page, index)=>{
+    const desc = page.getAttribute('data-desc');
+    if(desc.includes(query)){
+      $(page).show();
     } else {
-      container.innerHTML='<p>No se encontraron resultados.</p>';
+      $(page).hide();
     }
+  });
+  $('#book').turn('destroy').turn({
+    width:900,
+    height:550,
+    autoCenter:true,
+    elevation:50,
+    duration:1000,
+    gradients:true,
+    display:'double'
   });
 }
 </script>
-
 </body>
 </html>
