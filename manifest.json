@@ -10,30 +10,22 @@
 "start_url": "./?utm_source=web_app_manifest",
 "icons": [
 
-{  
-
-	"src": "/taladro192.png",
-	"type": "image/png",
-	"sizes": "192x192",
-    "purpose": "any maskable"
-
-},
-{  
-
-	"src": "/taladro360.png",
-	"type": "image/jpeg",
-	"sizes": "512x512",
-    "purpose": "maskable"
-
-},
-{  
-
-	"src": "/taladro360.png",
-	"type": "image/png",
-	"sizes": "180x180",
-    "purpose": "maskable"
-
-}
+ {
+      "src": "taladro192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "taladro512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "taladro512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
 
 
 
