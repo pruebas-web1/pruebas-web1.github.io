@@ -341,7 +341,111 @@ if ('serviceWorker' in navigator) {
   
 </script>
 
-  
+  <script>
+/* =========================
+   🔥 VENTA CRUZADA AUTOMÁTICA
+========================= */
+
+// Reglas de venta cruzada
+const crossSellRules = [
+  {
+    keywords: ['taladro'],
+    suggestions: ['Brocas', 'Extensiones', 'Kit de puntas']
+  },
+  {
+    keywords: ['martillo'],
+    suggestions: ['Clavos', 'Taquetes', 'Nivel']
+  },
+  {
+    keywords: ['llave'],
+    suggestions: ['Tuercas', 'Juego de dados', 'Lubricante']
+  },
+  {
+    keywords: ['destornillador'],
+    suggestions: ['Tornillos', 'Kit de puntas', 'Caja organizadora']
+  }
+];
+
+// Crear bloque visual
+function createCrossSellElement(productText){
+  const container = document.createElement('div');
+  container.style.marginTop = '8px';
+  container.style.padding = '8px';
+  container.style.background = '#fef3c7';
+  container.style.borderRadius = '8px';
+  container.style.fontSize = '14px';
+
+  let found = false;
+
+  crossSellRules.forEach(rule => {
+    rule.keywords.forEach(keyword => {
+      if(productText.includes(keyword)){
+        found = true;
+
+        const title = document.createElement('p');
+        title.textContent = '🔧 También necesitas:';
+        title.style.fontWeight = 'bold';
+        container.appendChild(title);
+
+        rule.suggestions.forEach(item => {
+          const btn = document.createElement('button');
+          btn.textContent = '➕ ' + item;
+          btn.style.margin = '3px';
+          btn.style.padding = '5px 10px';
+          btn.style.borderRadius = '20px';
+          btn.style.border = 'none';
+          btn.style.background = '#FF6F00';
+          btn.style.color = '#fff';
+          btn.style.cursor = 'pointer';
+
+          btn.onclick = () => {
+            alert('Agregado: ' + item + ' 🛒');
+          };
+
+          container.appendChild(btn);
+        });
+      }
+    });
+  });
+
+  return found ? container : null;
+}
+
+// Aplicar a todos los slides
+function applyCrossSell(){
+  const slides = document.querySelectorAll('.swiper-slide');
+
+  slides.forEach(slide => {
+    const descEl = slide.querySelector('p');
+    if(!descEl) return;
+
+    const text = descEl.textContent.toLowerCase();
+
+    // Evitar duplicados
+    if(slide.querySelector('.cross-sell')) return;
+
+    const crossSell = createCrossSellElement(text);
+    if(crossSell){
+      crossSell.classList.add('cross-sell');
+      slide.appendChild(crossSell);
+    }
+  });
+}
+
+// Ejecutar al cargar
+document.addEventListener('DOMContentLoaded', () => {
+  applyCrossSell();
+});
+
+// Ejecutar cuando agregas nuevos productos
+const observer = new MutationObserver(() => {
+  applyCrossSell();
+});
+
+observer.observe(document.getElementById('slidesContainer'), {
+  childList: true
+});
+</script>
   
 </body>
 </html>
